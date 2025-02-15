@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'ionic.pegaso',
+  appId: 'darthleonard.pegaso',
   appName: 'pegaso',
   webDir: 'www'
 };
