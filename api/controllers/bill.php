@@ -1,5 +1,4 @@
 <?php
-require_once '../core/database.php';
 
 class Bill {
     private $conn;
