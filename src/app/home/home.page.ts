@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 export class HomePage {
   constructor(private crudService: CrudService<Bill>) {}
 
-  bills: any[] = [];
+  bills?: Bill[];
 
   ngOnInit() {
     this.loadBills();
@@ -32,7 +32,7 @@ export class HomePage {
   async deleteBill(id: number) {
     try {
       await this.crudService.deleteAsync(`${environment.apiUrl}/bills`, id);
-      this.loadBills(); // Reload the bills after deletion
+      this.loadBills();
     } catch (error) {
       console.error('Error deleting bill:', error);
     }
