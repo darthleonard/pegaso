@@ -1,1 +1,10 @@
-<ion-icon id="click-trigger" [name]="name" [color]="value ? 'success' : 'danger'"></ion-icon>
+<ion-icon
+  [id]="name"
+  [name]="name"
+  [color]="value ? 'success' : 'danger'"
+></ion-icon>
+<ion-popover [trigger]="name" alignment="start">
+  <ng-template>
+    <ion-content class="ion-padding"> {{ value | currency }}</ion-content>
+  </ng-template>
+</ion-popover>
