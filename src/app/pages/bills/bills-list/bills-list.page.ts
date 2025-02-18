@@ -1,15 +1,15 @@
-import { Component } from '@angular/core';
-import { CrudService } from '../services/crud.service';
-import { Bill } from '../pages/bills/bill';
+import { Component, OnInit } from '@angular/core';
+import { CrudService } from 'src/app/services/crud.service';
+import { Bill } from '../bill';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+  selector: 'app-bills-list',
+  templateUrl: './bills-list.page.html',
+  styleUrls: ['./bills-list.page.css'],
   standalone: false,
 })
-export class HomePage {
+export class BillsListPage implements OnInit {
   constructor(private crudService: CrudService<Bill>) {}
 
   bills?: Bill[];
