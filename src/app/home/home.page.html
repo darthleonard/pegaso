@@ -16,7 +16,6 @@
 
   <ion-list *ngIf="bills && bills.length">
     <ion-item *ngFor="let bill of bills">
-
       <ion-grid>
         <ion-row>
           <ion-col size="6">
@@ -44,4 +43,9 @@
       </ion-button> -->
     </ion-item>
   </ion-list>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
