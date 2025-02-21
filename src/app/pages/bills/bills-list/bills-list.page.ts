@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CrudService } from 'src/app/services/crud.service';
 import { Bill } from '../bill';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-bills-list',
@@ -10,7 +11,11 @@ import { environment } from 'src/environments/environment';
   standalone: false,
 })
 export class BillsListPage implements OnInit {
-  constructor(private crudService: CrudService<Bill>) {}
+  constructor(
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+    private readonly crudService: CrudService<Bill>
+  ) {}
 
   bills?: Bill[];
 
@@ -27,6 +32,21 @@ export class BillsListPage implements OnInit {
     } catch (error) {
       console.error('Error loading bills:', error);
     }
+  }
+
+  async onCreateClick() {
+    this.router.navigate(['/bills/bills-form'], {
+      relativeTo: this.route
+    });
+  }
+
+  async onClick(bill: Bill) {
+    this.router.navigate(['/bills/bills-form'], {
+      relativeTo: this.route,
+      state: {
+        bill: bill
+      },
+    });
   }
 
   async deleteBill(id: number) {
