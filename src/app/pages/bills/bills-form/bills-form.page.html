@@ -1,0 +1,44 @@
+<app-header title="Edit Monthly Payments" defaultHref="/bills"></app-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label position="floating">Mes</ion-label>
+      <ion-input id="click-trigger" formControlName="month" type="text" readonly></ion-input>
+      <ion-popover trigger="click-trigger" triggerAction="click">
+        <ng-template>
+          <ion-datetime presentation="month-year" [showDefaultButtons]="true" (ionChange)="dateChange($event)"></ion-datetime>
+        </ng-template>
+      </ion-popover>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Casa</ion-label>
+      <ion-input formControlName="house" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Cable</ion-label>
+      <ion-input formControlName="cable" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Agua</ion-label>
+      <ion-input formControlName="water" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Electricidad</ion-label>
+      <ion-input formControlName="electricity" type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Gas</ion-label>
+      <ion-input formControlName="gas" type="number"></ion-input>
+    </ion-item>
+
+    <ion-button expand="full" type="submit" [disabled]="!billForm.valid"
+      >Enviar</ion-button
+    >
+  </form>
+</ion-content>
