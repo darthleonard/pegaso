@@ -25,8 +25,8 @@ export class CrudService<T> {
     return this.http.get<T>(`${url}/${id}`);
   }
 
-  update(url: string, id: number, item: T): Observable<T> {
-    return this.http.put<T>(`${url}/${id}`, item, {
+  update(url: string, item: T): Observable<T> {
+    return this.http.put<T>(`${url}`, item, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
@@ -64,9 +64,9 @@ export class CrudService<T> {
     }
   }
 
-  async updateAsync(url: string, id: number, item: T): Promise<T> {
+  async updateAsync(url: string, item: T): Promise<T> {
     try {
-      return await lastValueFrom(this.update(url, id, item));
+      return await lastValueFrom(this.update(url, item));
     } catch (error) {
       console.error('Error updating item', error);
       throw error;
