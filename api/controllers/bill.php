@@ -1,12 +1,11 @@
 <?php
-
 class Bill {
     private $conn;
     private $table_name = "bills";
 
     public $id;
     public $creation_date;
-    public $las_mod_date;
+    public $last_mod_date;
     public $month;
     public $house;
     public $cable;
@@ -56,7 +55,7 @@ class Bill {
 
         if ($row) {
             $this->creation_date = $row['creation_date'];
-            $this->las_mod_date = $row['las_mod_date'];
+            $this->last_mod_date = $row['last_mod_date'];
             $this->month = $row['month'];
             $this->house = $row['house'];
             $this->cable = $row['cable'];
@@ -67,7 +66,7 @@ class Bill {
     }
 
     public function readByDate($date) {
-        $query = "SELECT * FROM " . $this->table_name . " WHERE las_mod_date > :date";
+        $query = "SELECT * FROM " . $this->table_name . " WHERE last_mod_date > :date";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":date", $date);
         $stmt->execute();
