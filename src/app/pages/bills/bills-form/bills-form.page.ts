@@ -5,10 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bill } from '../bill';
 import { CrudService } from 'src/app/services/crud.service';
 import { environment } from 'src/environments/environment';
+import { DataService } from 'src/app/services/data.service';
 
 @Component({
   selector: 'app-bills-form',
   templateUrl: './bills-form.page.html',
+  providers: [DataService],
   standalone: false,
 })
 export class BillsFormPage implements OnInit {
@@ -16,8 +18,10 @@ export class BillsFormPage implements OnInit {
     private readonly router: Router,
     private location: Location,
     private readonly fb: FormBuilder,
-    private readonly crudService: CrudService<Bill>
+    private readonly crudService: CrudService<Bill>,
+    private readonly dataService: DataService<Bill>
   ) {
+    this.dataService.init('bills');
     this.createForm();
   }
 
@@ -44,19 +48,7 @@ export class BillsFormPage implements OnInit {
     if (this.billForm.valid) {
       try {
         const billData = this.billForm.value;
-        if (this.bill && this.bill.id) {
-          console.log('Editing bill:', billData);
-          await this.crudService.updateAsync(
-            `${environment.apiUrl}/bills`,
-            billData
-          );
-        } else {
-          console.log('New bill submitted:', billData);
-          await this.crudService.createAsync(
-            `${environment.apiUrl}/bills`,
-            billData
-          );
-        }
+        await this.dataService.saveRecord(billData);
         this.location.back();
       } catch (error) {
         console.error('Error saving bill:', error);
