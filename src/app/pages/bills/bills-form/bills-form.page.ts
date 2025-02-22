@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bill } from '../bill';
 import { CrudService } from 'src/app/services/crud.service';
@@ -13,6 +14,7 @@ import { environment } from 'src/environments/environment';
 export class BillsFormPage implements OnInit {
   constructor(
     private readonly router: Router,
+    private location: Location,
     private readonly fb: FormBuilder,
     private readonly crudService: CrudService<Bill>
   ) {
@@ -38,15 +40,26 @@ export class BillsFormPage implements OnInit {
     this.title = `${titlePrefix} Monthly Payment`;
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.billForm.valid) {
-      const billData = this.billForm.value;
-      if (this.bill && this.bill.id) {
-        console.log('Editing bill:', billData);
-        this.crudService.updateAsync(`${environment.apiUrl}/bills`, billData);
-      } else {
-        console.log('New bill submitted:', billData);
-        this.crudService.createAsync(`${environment.apiUrl}/bills`, billData);
+      try {
+        const billData = this.billForm.value;
+        if (this.bill && this.bill.id) {
+          console.log('Editing bill:', billData);
+          await this.crudService.updateAsync(
+            `${environment.apiUrl}/bills`,
+            billData
+          );
+        } else {
+          console.log('New bill submitted:', billData);
+          await this.crudService.createAsync(
+            `${environment.apiUrl}/bills`,
+            billData
+          );
+        }
+        this.location.back();
+      } catch (error) {
+        console.error('Error saving bill:', error);
       }
     } else {
       console.log('Formulario inválido');

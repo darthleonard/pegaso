@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./bills-list.page.css'],
   standalone: false,
 })
-export class BillsListPage implements OnInit {
+export class BillsListPage {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
@@ -19,7 +19,7 @@ export class BillsListPage implements OnInit {
 
   bills?: Bill[];
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadBills();
   }
 
@@ -36,7 +36,7 @@ export class BillsListPage implements OnInit {
 
   async onCreateClick() {
     this.router.navigate(['/bills/bills-form'], {
-      relativeTo: this.route
+      relativeTo: this.route,
     });
   }
 
@@ -44,7 +44,7 @@ export class BillsListPage implements OnInit {
     this.router.navigate(['/bills/bills-form'], {
       relativeTo: this.route,
       state: {
-        bill: bill
+        bill: bill,
       },
     });
   }
