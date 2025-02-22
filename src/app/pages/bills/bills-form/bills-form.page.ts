@@ -36,18 +36,6 @@ export class BillsFormPage implements OnInit {
     this.title = `${titlePrefix} Monthly Payments`;
   }
 
-  dateChange(event: any) {
-    const date = event.detail.value ? new Date(event.detail.value) : new Date();
-    const monthName = this.toPascalCase(
-      date.toLocaleString('default', { month: 'long' })
-    );
-    const newDate = `${monthName} ${date.getFullYear()}`;
-
-    if (this.billForm.get('month')?.value !== newDate) {
-      this.billForm.patchValue({ month: `${monthName} ${date.getFullYear()}` });
-    }
-  }
-
   onSubmit() {
     if (this.billForm.valid) {
       const billData = this.billForm.value;
@@ -62,6 +50,10 @@ export class BillsFormPage implements OnInit {
       console.log('Formulario inválido');
     }
   }
+  
+  onChange(event: any) {
+    console.log(event);
+  }
 
   private createForm() {
     this.billForm = this.fb.group({
@@ -73,14 +65,5 @@ export class BillsFormPage implements OnInit {
       month: [null, Validators.required],
       water: [null, Validators.min(0)],
     });
-  }
-
-  private toPascalCase(str: string): string {
-    return str
-      .replace(/(?:^\w|[A-Z]|\b\w|\s+|_)/g, (match, index) =>
-        index === 0 ? match.toUpperCase() : match.toLowerCase()
-      )
-      .replace(/\s+/g, '') // Remove spaces
-      .replace(/_/g, ''); // Remove underscores
   }
 }

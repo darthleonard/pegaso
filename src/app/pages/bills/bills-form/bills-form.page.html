@@ -4,21 +4,7 @@
   <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Mes</ion-label>
-      <ion-input
-        id="click-trigger"
-        formControlName="month"
-        type="text"
-        readonly
-      ></ion-input>
-      <ion-popover trigger="click-trigger" triggerAction="click">
-        <ng-template>
-          <ion-datetime
-            presentation="month-year"
-            [showDefaultButtons]="true"
-            (ionChange)="dateChange($event)"
-          ></ion-datetime>
-        </ng-template>
-      </ion-popover>
+      <app-date-month-input formControlName="month" (onChange)="onChange($event)"></app-date-month-input>
     </ion-item>
 
     <ion-item>
