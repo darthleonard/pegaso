@@ -3,11 +3,13 @@ import { environment } from 'src/environments/environment';
 import { OfflineDataService } from './offline-data.service';
 import { CrudService } from './crud.service';
 import { IBaseRecord } from '../base/ibase-record';
+import { ConnectivityService } from './connectivity.service';
 
 @Injectable()
 export class DataService<T extends IBaseRecord> {
   private endpoint!: string;
   constructor(
+    private readonly connectivityService: ConnectivityService,
     private readonly offlineDataService: OfflineDataService,
     private readonly crudService: CrudService<T>
   ) {}
@@ -28,7 +30,9 @@ export class DataService<T extends IBaseRecord> {
     record.id = this.generateUUID();
     await this.offlineDataService.addRecord(this.endpoint, record);
 
-    //await this.crudService.createAsync(`${environment.apiUrl}/bills`, record);
+    if (this.connectivityService.isOnline()) {
+      await this.crudService.createAsync(`${environment.apiUrl}/bills`, record);
+    }
   }
 
   async getAllRecords() {
@@ -46,10 +50,12 @@ export class DataService<T extends IBaseRecord> {
       updatedRecord
     );
 
-    // await this.crudService.updateAsync(
-    //   `${environment.apiUrl}/bills`,
-    //   updatedRecord
-    // );
+    if (this.connectivityService.isOnline()) {
+      await this.crudService.updateAsync(
+        `${environment.apiUrl}/bills`,
+        updatedRecord
+      );
+    }
   }
 
   async deleteRecord(id: string) {
@@ -57,10 +63,13 @@ export class DataService<T extends IBaseRecord> {
   }
 
   private generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = (c === 'x' ? r : (r & 0x3 | 0x8));
-      return v.toString(16);
-    });
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      }
+    );
   }
 }

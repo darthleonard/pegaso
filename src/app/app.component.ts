@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { localDatabase } from './database/local-database';
 import { NetworkService } from './services/network.service';
+import { ConnectivityService } from './services/connectivity.service';
 
 @Component({
   selector: 'app-root',
@@ -9,19 +10,14 @@ import { NetworkService } from './services/network.service';
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly networkService: NetworkService) {}
+  constructor(private readonly connectivityService: ConnectivityService) {}
 
   ngOnInit(): void {
     for (const table of localDatabase.tables) {
       console.log('Download data from:', table.name);
     }
 
-    this.networkService.checkConnection().then((status) => {
-      if (status.connected) {
-        console.log('Connected to:', status.connectionType);
-      } else {
-        console.log('No connection');
-      }
-    });
+    // force to work offline for a while
+    this.connectivityService.switchOnlineMode();
   }
 }
