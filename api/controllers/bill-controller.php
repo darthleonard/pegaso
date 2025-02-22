@@ -39,7 +39,7 @@ class BillController {
         $this->bill->gas = $data->gas;
         
         if ($this->bill->create()) {
-            echo json_encode(["message" => "Bill created successfully."]);
+            echo json_encode($this->bill);
         } else {
             echo json_encode(["message" => "Failed to create bill."]);
         }
@@ -56,7 +56,7 @@ class BillController {
         $this->bill->gas = $data->gas;
 
         if ($this->bill->update()) {
-            echo json_encode(["message" => "Bill updated successfully."]);
+            echo json_encode($this->bill);
         } else {
             echo json_encode(["message" => "Failed to update bill."]);
         }
