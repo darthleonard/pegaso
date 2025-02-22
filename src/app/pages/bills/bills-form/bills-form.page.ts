@@ -35,7 +35,7 @@ export class BillsFormPage implements OnInit {
         titlePrefix = 'Edit';
       }
     }
-    this.title = `${titlePrefix} Monthly Payments`;
+    this.title = `${titlePrefix} Monthly Payment`;
   }
 
   onSubmit() {
