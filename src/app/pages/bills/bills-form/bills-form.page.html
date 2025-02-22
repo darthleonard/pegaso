@@ -4,7 +4,7 @@
   <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
     <ion-item>
       <ion-label position="floating">Mes</ion-label>
-      <app-date-month-input formControlName="month"></app-date-month-input>
+      <app-date-month-input formControlName="month" [readonly]="isEditing"></app-date-month-input>
     </ion-item>
 
     <ion-item>

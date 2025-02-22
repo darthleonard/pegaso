@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -16,6 +16,8 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 })
 export class DateMonthInputComponent implements ControlValueAccessor {
   constructor(private datePipe: DatePipe) {}
+
+  @Input() readonly = false;
 
   dateInput: string | undefined | null;
   onChange?: (value: any) => void;

@@ -20,6 +20,7 @@ export class BillsFormPage implements OnInit {
   }
 
   title = '';
+  isEditing = false;
   billForm: FormGroup = new FormGroup({});
   bill: Bill | null = null;
 
@@ -29,6 +30,7 @@ export class BillsFormPage implements OnInit {
     if (navigationState && navigationState['bill']) {
       this.bill = navigationState['bill'];
       if (this.bill) {
+        this.isEditing = true;
         this.billForm.patchValue(this.bill);
         titlePrefix = 'Edit';
       }
@@ -50,7 +52,7 @@ export class BillsFormPage implements OnInit {
       console.log('Formulario inválido');
     }
   }
-  
+
   private createForm() {
     this.billForm = this.fb.group({
       cable: [null, Validators.min(0)],

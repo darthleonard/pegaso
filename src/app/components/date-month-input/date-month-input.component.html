@@ -4,7 +4,7 @@
   type="text"
   readonly
 ></ion-input>
-<ion-popover trigger="click-trigger" triggerAction="click">
+<ion-popover *ngIf="!readonly" trigger="click-trigger" triggerAction="click">
   <ng-template>
     <ion-datetime
       presentation="month-year"
