@@ -51,10 +51,6 @@ export class BillsFormPage implements OnInit {
     }
   }
   
-  onChange(event: any) {
-    console.log(event);
-  }
-
   private createForm() {
     this.billForm = this.fb.group({
       cable: [null, Validators.min(0)],
