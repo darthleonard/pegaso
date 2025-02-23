@@ -28,11 +28,11 @@ export class DataService<T extends IBaseRecord> {
 
   async addRecord(record: T) {
     record.id = this.generateUUID();
-    await this.offlineDataService.addRecord(this.endpoint, record);
-
     if (this.connectivityService.isOnline()) {
       await this.crudService.createAsync(`${environment.apiUrl}/bills`, record);
     }
+    
+    await this.offlineDataService.addRecord(this.endpoint, record);
   }
 
   async getAllRecords() {
@@ -44,18 +44,18 @@ export class DataService<T extends IBaseRecord> {
   }
 
   async updateRecord(id: string, updatedRecord: T) {
-    await this.offlineDataService.updateRecord(
-      this.endpoint,
-      id,
-      updatedRecord
-    );
-
     if (this.connectivityService.isOnline()) {
       await this.crudService.updateAsync(
         `${environment.apiUrl}/bills`,
         updatedRecord
       );
     }
+
+    await this.offlineDataService.updateRecord(
+      this.endpoint,
+      id,
+      updatedRecord
+    );
   }
 
   async deleteRecord(id: string) {
