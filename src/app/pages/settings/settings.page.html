@@ -1,0 +1,13 @@
+<app-header title="Settings" />
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating"> Api URL </ion-label>
+      <ion-input type="text" [(ngModel)]="config.apiUrl" />
+    </ion-item>
+    <ion-item>
+      <ion-toggle  [(ngModel)]="config.online">Online</ion-toggle>
+    </ion-item>
+  </ion-list>
+</ion-content>
