@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { localDatabase } from './database/local-database';
-import { NetworkService } from './services/network.service';
+import { LoadingController } from '@ionic/angular';
 import { ConnectivityService } from './services/connectivity.service';
+import { DownloadService } from './services/download.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -10,14 +11,25 @@ import { ConnectivityService } from './services/connectivity.service';
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  constructor(private readonly connectivityService: ConnectivityService) {}
+  constructor(
+    private readonly downloadService: DownloadService,
+    private readonly loadingController: LoadingController
+  ) {}
 
   ngOnInit(): void {
-    for (const table of localDatabase.tables) {
-      console.log('Download data from:', table.name);
-    }
+    this.downloadService.download();
+    this.presentAlert();
+  }
 
-    // force to work offline for a while
-    this.connectivityService.switchOnlineMode();
+  async presentAlert() {
+    const loading = await this.loadingController.create({
+      message: 'Pleaste wait, downloading the data...',
+    });
+    await loading.present();
+    this.downloadService.downloadFinished$
+      .pipe(filter((f) => f))
+      .subscribe(async () => {
+        await loading.dismiss();
+      });
   }
 }
