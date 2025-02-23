@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { OfflineDataService } from './offline-data.service';
 import { CrudService } from './crud.service';
 import { IBaseRecord } from '../base/ibase-record';
@@ -8,6 +7,7 @@ import { ConnectivityService } from './connectivity.service';
 @Injectable()
 export class DataService<T extends IBaseRecord> {
   private endpoint!: string;
+
   constructor(
     private readonly connectivityService: ConnectivityService,
     private readonly offlineDataService: OfflineDataService,
@@ -29,15 +29,15 @@ export class DataService<T extends IBaseRecord> {
   async addRecord(record: T) {
     record.id = this.generateUUID();
     if (this.connectivityService.isOnline()) {
-      await this.crudService.createAsync(`${environment.apiUrl}/${this.endpoint}`, record);
+      await this.crudService.createAsync(this.endpoint, record);
     }
-    
+
     await this.offlineDataService.addRecord(this.endpoint, record);
   }
 
   async getAllRecords(refresh = false) {
-    if(refresh && this.connectivityService.isOnline()) {
-      const records = await this.crudService.getAllAsync(`${environment.apiUrl}/${this.endpoint}`);
+    if (refresh && this.connectivityService.isOnline()) {
+      const records = await this.crudService.getAllAsync(this.endpoint);
       await this.offlineDataService.hardReload(this.endpoint, records);
     }
     return await this.offlineDataService.getAllRecords(this.endpoint);
@@ -49,10 +49,7 @@ export class DataService<T extends IBaseRecord> {
 
   async updateRecord(id: string, updatedRecord: T) {
     if (this.connectivityService.isOnline()) {
-      await this.crudService.updateAsync(
-        `${environment.apiUrl}/${this.endpoint}`,
-        updatedRecord
-      );
+      await this.crudService.updateAsync(this.endpoint, updatedRecord);
     }
 
     await this.offlineDataService.updateRecord(

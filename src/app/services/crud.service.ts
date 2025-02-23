@@ -2,80 +2,83 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CrudService<T> {
+  private apiUrl = environment.apiUrl;
+
   constructor(private http: HttpClient) {}
 
-  create(url: string, item: T): Observable<T> {
-    return this.http.post<T>(url, item, {
+  create(endpoint: string, item: T): Observable<T> {
+    return this.http.post<T>(`${this.apiUrl}/${endpoint}`, item, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     });
   }
 
-  getAll(url: string): Observable<T[]> {
-    return this.http.get<T[]>(url);
+  getAll(endpoint: string): Observable<T[]> {
+    return this.http.get<T[]>(`${this.apiUrl}/${endpoint}`);
   }
 
-  getById(url: string, id: number): Observable<T> {
-    return this.http.get<T>(`${url}/${id}`);
+  getById(endpoint: string, id: number): Observable<T> {
+    return this.http.get<T>(`${this.apiUrl}/${endpoint}/${id}`);
   }
 
-  update(url: string, item: T): Observable<T> {
-    return this.http.put<T>(`${url}`, item, {
+  update(endpoint: string, item: T): Observable<T> {
+    return this.http.put<T>(`${this.apiUrl}/${endpoint}`, item, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     });
   }
 
-  delete(url: string, id: number): Observable<void> {
-    return this.http.delete<void>(`${url}/${id}`);
+  delete(endpoint: string, id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${endpoint}/${id}`);
   }
 
-  async getAllAsync(url: string): Promise<T[]> {
+  async getAllAsync(endpoint: string): Promise<T[]> {
     try {
-      return await lastValueFrom(this.getAll(url));
+      return await lastValueFrom(this.getAll(endpoint));
     } catch (error) {
       console.error('Error loading data', error);
       throw error;
     }
   }
 
-  async getByIdAsync(url: string, id: number): Promise<T> {
+  async getByIdAsync(endpoint: string, id: number): Promise<T> {
     try {
-      return await lastValueFrom(this.getById(url, id));
+      return await lastValueFrom(this.getById(endpoint, id));
     } catch (error) {
       console.error('Error loading data by ID', error);
       throw error;
     }
   }
 
-  async createAsync(url: string, item: T): Promise<T> {
+  async createAsync(endpoint: string, item: T): Promise<T> {
     try {
-      return await lastValueFrom(this.create(url, item));
+      return await lastValueFrom(this.create(endpoint, item));
     } catch (error) {
       console.error('Error creating item', error);
       throw error;
     }
   }
 
-  async updateAsync(url: string, item: T): Promise<T> {
+  async updateAsync(endpoint: string, item: T): Promise<T> {
     try {
-      return await lastValueFrom(this.update(url, item));
+      return await lastValueFrom(this.update(endpoint, item));
     } catch (error) {
       console.error('Error updating item', error);
       throw error;
     }
   }
 
-  async deleteAsync(url: string, id: number): Promise<void> {
+  async deleteAsync(endpoint: string, id: number): Promise<void> {
     try {
-      await lastValueFrom(this.delete(url, id));
+      await lastValueFrom(this.delete(endpoint, id));
     } catch (error) {
       console.error('Error deleting item', error);
       throw error;
