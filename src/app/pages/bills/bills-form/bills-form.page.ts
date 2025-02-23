@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Bill } from '../bill';
-import { CrudService } from 'src/app/services/crud.service';
-import { environment } from 'src/environments/environment';
 import { DataService } from 'src/app/services/data.service';
+import { HasChangesAlertService } from 'src/app/services/has-changes-alert.service';
 
 @Component({
   selector: 'app-bills-form',
@@ -18,8 +17,8 @@ export class BillsFormPage implements OnInit {
     private readonly router: Router,
     private location: Location,
     private readonly fb: FormBuilder,
-    private readonly crudService: CrudService<Bill>,
-    private readonly dataService: DataService<Bill>
+    private readonly dataService: DataService<Bill>,
+    private readonly hasChangesAlertService: HasChangesAlertService
   ) {
     this.dataService.init('bills');
     this.createForm();
@@ -42,6 +41,16 @@ export class BillsFormPage implements OnInit {
       }
     }
     this.title = `${titlePrefix} Monthly Payment`;
+  }
+
+  hasChanges(): boolean {
+    return this.billForm.dirty;
+  }
+
+  showUnsavedChangesAlert(): Promise<boolean> {
+    return this.hasChangesAlertService.presentAlert(
+      'You have unsaved changes. Do you really want to leave?'
+    );
   }
 
   async onSubmit() {
