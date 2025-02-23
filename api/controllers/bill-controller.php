@@ -31,6 +31,7 @@ class BillController {
 
     public function createBill() {
         $data = json_decode(file_get_contents("php://input"));
+        $this->bill->id = $data->id;
         $this->bill->month = $data->month;
         $this->bill->house = $data->house;
         $this->bill->cable = $data->cable;

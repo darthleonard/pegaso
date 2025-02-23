@@ -18,11 +18,12 @@ class Bill {
     }
 
     public function create() {
-        $query = "INSERT INTO " . $this->table_name . " (month, house, cable, water, electricity, gas) 
-                  VALUES (:month, :house, :cable, :water, :electricity, :gas)";
+        $query = "INSERT INTO " . $this->table_name . " (id, month, house, cable, water, electricity, gas) 
+                  VALUES (:id, :month, :house, :cable, :water, :electricity, :gas)";
 
         $stmt = $this->conn->prepare($query);
 
+        $stmt->bindParam(":id", $this->id);
         $stmt->bindParam(":month", $this->month);
         $stmt->bindParam(":house", $this->house);
         $stmt->bindParam(":cable", $this->cable);
@@ -31,14 +32,13 @@ class Bill {
         $stmt->bindParam(":gas", $this->gas);
 
         if ($stmt->execute()) {
-            $this->id = $this->conn->lastInsertId();
             return true;
         }
         return false;
     }
 
     public function read() {
-        $query = "SELECT * FROM " . $this->table_name;
+        $query = "SELECT * FROM " . $this->table_name ." ORDER BY month DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
