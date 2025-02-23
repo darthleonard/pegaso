@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class CrudService<T> {
+export class OnlineDataService<T> {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}

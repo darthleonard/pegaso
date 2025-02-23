@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CrudService } from '../services/crud.service';
+import { OnlineDataService } from '../services/online.service';
 import { Bill } from '../pages/bills/bill';
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +10,7 @@ import { environment } from 'src/environments/environment';
   standalone: false,
 })
 export class HomePage {
-  constructor(private crudService: CrudService<Bill>) {}
+  constructor(private crudService: OnlineDataService<Bill>) {}
 
   bills?: Bill[];
 
