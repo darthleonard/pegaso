@@ -8,28 +8,29 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    loadChildren: () =>
-      import('./home/home.module').then((m) => m.HomePageModule),
-  },
-  {
     path: 'bills',
     loadChildren: () =>
       import('./pages/bills/bills.module').then((m) => m.BillsPageModule),
   },
   {
     path: 'fuel',
-    loadChildren: () => import('./pages/fuel/fuel.module').then( m => m.FuelPageModule)
+    loadChildren: () =>
+      import('./pages/fuel/fuel.module').then((m) => m.FuelPageModule),
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },  {
-    path: 'settings',
-    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+    loadChildren: () =>
+      import('./pages/dashboard/dashboard.module').then(
+        (m) => m.DashboardPageModule
+      ),
   },
-
-
+  {
+    path: 'settings',
+    loadChildren: () =>
+      import('./pages/settings/settings.module').then(
+        (m) => m.SettingsPageModule
+      ),
+  },
 ];
 
 @NgModule({
