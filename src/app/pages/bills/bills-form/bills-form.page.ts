@@ -58,6 +58,7 @@ export class BillsFormPage implements OnInit {
       try {
         const billData = this.billForm.value;
         await this.dataService.saveRecord(billData);
+        this.billForm.reset();
         this.location.back();
       } catch (error) {
         console.error('Error saving bill:', error);
