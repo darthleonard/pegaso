@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-app-bill-icon',
+  selector: 'app-bill-icon',
   templateUrl: './app-bill-icon.component.html',
   styles: [
     `
@@ -15,6 +15,7 @@ import { Component, Input } from '@angular/core';
 export class AppBillIconComponent {
   constructor() {}
 
+  @Input() group = '';
   @Input() name = 'logo-ionic';
   @Input() value: number | undefined;
 }

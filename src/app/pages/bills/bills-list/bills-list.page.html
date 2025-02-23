@@ -4,7 +4,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  
+
   <div *ngIf="!bills">loading...</div>
   <div *ngIf="bills && !bills.length">no records found</div>
 
@@ -16,45 +16,47 @@
             <ion-label>{{ bill.month | date: 'MMMM y' }}</ion-label>
           </ion-col>
           <ion-col>
-            <app-app-bill-icon
+            <app-bill-icon
               name="home-outline"
+              [group]="bill.month"
               [value]="bill.house"
-            ></app-app-bill-icon>
+            />
           </ion-col>
           <ion-col>
-            <app-app-bill-icon
+            <app-bill-icon
               name="tv-outline"
+              [group]="bill.month"
               [value]="bill.cable"
-            ></app-app-bill-icon>
+            />
           </ion-col>
           <ion-col>
-            <app-app-bill-icon
+            <app-bill-icon
               name="water-outline"
+              [group]="bill.month"
               [value]="bill.water"
-            ></app-app-bill-icon>
+            />
           </ion-col>
           <ion-col>
-            <app-app-bill-icon
+            <app-bill-icon
               name="bulb-outline"
+              [group]="bill.month"
               [value]="bill.electricity"
-            ></app-app-bill-icon>
+            />
           </ion-col>
           <ion-col>
-            <app-app-bill-icon
+            <app-bill-icon
               name="flame-outline"
+              [group]="bill.month"
               [value]="bill.gas"
-            ></app-app-bill-icon>
+            />
           </ion-col>
         </ion-row>
       </ion-grid>
-      <!-- <ion-button fill="clear" (click)="deleteBill(bill.id)">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button> -->
     </ion-item>
   </ion-list>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="onCreateClick()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add"/>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

@@ -1,11 +1,11 @@
 <ion-icon
-  [id]="name"
+  [id]="group + name"
   [name]="name"
   [color]="value ? 'success' : 'medium'"
 ></ion-icon>
 <ion-popover
   *ngIf="value"
-  [trigger]="name"
+  [trigger]="group + name"
   [cssClass]="'tooltip'"
   alignment="start"
 >
