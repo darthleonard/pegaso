@@ -65,4 +65,9 @@ export class OfflineDataService {
       console.error(`Error deleting record from ${storeName}:`, err);
     }
   }
+
+  async hardReload(storeName: string, records: any[]) {
+    await localDatabase.table(storeName).clear();
+    await localDatabase.table(storeName).bulkPut(records);
+  }
 }

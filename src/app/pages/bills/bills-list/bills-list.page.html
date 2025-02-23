@@ -1,6 +1,10 @@
 <app-header title="Monthly Payments"></app-header>
 
 <ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  
   <div *ngIf="!bills">loading...</div>
   <div *ngIf="bills && !bills.length">no records found</div>
 
