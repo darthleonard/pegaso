@@ -7,7 +7,21 @@
       <ion-input type="text" [(ngModel)]="config.apiUrl" />
     </ion-item>
     <ion-item>
-      <ion-toggle  [(ngModel)]="config.online">Online</ion-toggle>
+      <ion-toggle [(ngModel)]="config.online">Online</ion-toggle>
     </ion-item>
+    <ion-item>
+      <ion-select label="Auto download data" [(ngModel)]="config.autoDownload">
+        <ion-select-option value="always">Always (on app start)</ion-select-option>
+        <ion-select-option value="never">Never</ion-select-option>
+        <!-- <ion-select-option value="custom">Custom (specify time)</ion-select-option> -->
+      </ion-select>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label position="floating"> Download interval </ion-label>
+      <ion-input type="numeric" [(ngModel)]="config.downloadInterval" />
+    </ion-item> -->
   </ion-list>
+  <ion-button (click)="onSave()" expand="block">
+    Save
+  </ion-button>
 </ion-content>

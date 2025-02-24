@@ -1,25 +1,34 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, lastValueFrom } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NetworkService } from './network.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ConnectivityService {
   private online: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
-  private onlineMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private onlineMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    true
+  );
 
-  constructor(private networkService: NetworkService) { }
+  constructor(private networkService: NetworkService) {}
 
-  online$ = this.online.asObservable();         // handle access to network
-  onlineMode$ = this.onlineMode.asObservable(); // handle user preference to be online or offline
+  online$ = this.online.asObservable();
+  onlineMode$ = this.onlineMode.asObservable();
 
+  /**
+   * Checks if the application can work online based on internet acces and user preferences.
+   */
   isOnline() {
     return this.online.value;
   }
 
-  async switchOnlineMode() {
-    this.onlineMode.next(!this.onlineMode.value);
+  async switchOnlineMode(enable?: boolean) {
+    if (enable === undefined || enable !== this.onlineMode.value) {
+      this.onlineMode.next(!this.onlineMode.value);
+    } else {
+      this.onlineMode.next(enable);
+    }
     await this.checkConnectivity();
   }
 
