@@ -1,0 +1,39 @@
+<div class="error" *ngIf="error">
+  {{ error }}
+</div>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div *ngFor="let field of metadata">
+    <ion-item [ngSwitch]="field.type">
+      <ng-container *ngSwitchCase="'date-month'">
+        <ion-label position="floating">Mes</ion-label>
+        <app-date-month-input
+          [formControlName]="field.field"
+          [readonly]="isEditing"
+        ></app-date-month-input>
+      </ng-container>
+      <ng-container *ngSwitchCase="'number'">
+        <ion-label position="stacked">{{ field.label }}</ion-label>
+        <ion-input [formControlName]="field.field" type="number"></ion-input>
+      </ng-container>
+      <ng-container *ngSwitchCase="'checkbox'">
+        <ion-label position="stacked">{{ field.label }}</ion-label>
+        <ion-toggle [formControlName]="field.field"></ion-toggle>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <ion-label position="stacked">{{ field.label }}</ion-label>
+        <ion-input [formControlName]="field.field" type="text"></ion-input>
+      </ng-container>
+    </ion-item>
+
+    <ion-text
+      *ngIf="
+        form.controls[field.field].invalid && form.controls[field.field].touched
+      "
+    >
+      <p class="error-message">Please enter a valid {{ field.label }}.</p>
+    </ion-text>
+  </div>
+
+  <ion-button type="submit" [disabled]="form.invalid">Submit</ion-button>
+</form>

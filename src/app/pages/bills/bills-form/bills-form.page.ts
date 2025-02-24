@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Bill } from '../bill';
+
 import { DataService } from 'src/app/services/data.service';
 import { HasChangesAlertService } from 'src/app/services/has-changes-alert.service';
+import { FormComponent } from 'src/app/components/form/form/form.component';
+import { Bill } from '../bill';
+import { billFormMetadata } from './bills-form.metadata';
 
 @Component({
   selector: 'app-bills-form',
@@ -13,38 +15,36 @@ import { HasChangesAlertService } from 'src/app/services/has-changes-alert.servi
   standalone: false,
 })
 export class BillsFormPage implements OnInit {
+  @ViewChild(FormComponent) form!: FormComponent;
+
   constructor(
     private readonly router: Router,
-    private location: Location,
-    private readonly fb: FormBuilder,
+    private readonly location: Location,
     private readonly dataService: DataService<Bill>,
     private readonly hasChangesAlertService: HasChangesAlertService
   ) {
     this.dataService.init('bills');
-    this.createForm();
   }
 
+  metadata = billFormMetadata;
   title = '';
   isEditing = false;
-  billForm: FormGroup = new FormGroup({});
   bill: Bill | null = null;
 
   ngOnInit() {
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
     let titlePrefix = 'Create';
+    this.bill = {} as Bill;
     if (navigationState && navigationState['bill']) {
       this.bill = navigationState['bill'];
-      if (this.bill) {
-        this.isEditing = true;
-        this.billForm.patchValue(this.bill);
-        titlePrefix = 'Edit';
-      }
+      this.isEditing = true;
+      titlePrefix = 'Edit';
     }
     this.title = `${titlePrefix} Monthly Payment`;
   }
 
   hasChanges(): boolean {
-    return this.billForm.dirty;
+    return this.form.hasChanges();
   }
 
   showUnsavedChangesAlert(): Promise<boolean> {
@@ -53,30 +53,16 @@ export class BillsFormPage implements OnInit {
     );
   }
 
-  async onSubmit() {
-    if (this.billForm.valid) {
-      try {
-        const billData = this.billForm.value;
-        await this.dataService.saveRecord(billData);
-        this.billForm.reset();
-        this.location.back();
-      } catch (error) {
-        console.error('Error saving bill:', error);
-      }
-    } else {
-      console.log('Formulario inválido');
+  async onFormSubmit(formData: any) {
+    try {
+      const billData = formData;
+      billData.month = new Date(billData.month).toISOString().split('T')[0];
+      await this.dataService.saveRecord(billData);
+      this.form.form.reset();
+      this.location.back();
+    } catch (error: any) {
+      this.form.error = `Error saving bill: ${error.error.text}`;
+      console.error('Error saving bill:', error);
     }
-  }
-
-  private createForm() {
-    this.billForm = this.fb.group({
-      cable: [null, Validators.min(0)],
-      electricity: [null, Validators.min(0)],
-      gas: [null, Validators.min(0)],
-      house: [null, Validators.min(0)],
-      id: [null],
-      month: [null, Validators.required],
-      water: [null, Validators.min(0)],
-    });
   }
 }
