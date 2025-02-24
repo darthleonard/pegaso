@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { IBaseRecord } from '../base/ibase-record';
+import { ChangeType } from '../base/change-type';
 import { OfflineDataService } from './offline-data.service';
 import { OnlineDataService } from './online.service';
-import { IBaseRecord } from '../base/ibase-record';
 import { ConnectivityService } from './connectivity.service';
 
 @Injectable()
@@ -30,6 +31,8 @@ export class DataService<T extends IBaseRecord> {
     record.id = this.generateUUID();
     if (this.connectivityService.isOnline()) {
       await this.onlineDataService.createAsync(this.endpoint, record);
+    } else {
+      record.changeType = ChangeType.New;
     }
 
     await this.offlineDataService.addRecord(this.endpoint, record);
@@ -50,6 +53,10 @@ export class DataService<T extends IBaseRecord> {
   async updateRecord(id: string, updatedRecord: T) {
     if (this.connectivityService.isOnline()) {
       await this.onlineDataService.updateAsync(this.endpoint, updatedRecord);
+    } else {
+      if (!updatedRecord.changeType) {
+        updatedRecord.changeType = ChangeType.Edited;
+      }
     }
 
     await this.offlineDataService.updateRecord(
