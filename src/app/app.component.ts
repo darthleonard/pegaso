@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
-import { ConnectivityService } from './services/connectivity.service';
-import { DownloadService } from './services/download.service';
-import { filter } from 'rxjs';
+import { AppInitializerService } from './services/app-initializer.service';
 
 @Component({
   selector: 'app-root',
@@ -12,24 +10,24 @@ import { filter } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private readonly downloadService: DownloadService,
-    private readonly loadingController: LoadingController
+    private readonly loadingController: LoadingController,
+    private readonly appInitializerService: AppInitializerService
   ) {}
 
+  loaded = false;
+
   ngOnInit(): void {
-    this.downloadService.download();
-    this.presentAlert();
+    this.initialize();
   }
 
-  async presentAlert() {
+  async initialize() {
     const loading = await this.loadingController.create({
-      message: 'Pleaste wait, downloading the data...',
+      message: 'Loading...',
     });
-    await loading.present();
-    this.downloadService.downloadFinished$
-      .pipe(filter((f) => f))
-      .subscribe(async () => {
-        await loading.dismiss();
-      });
+
+    // Pass the loading and setLoaded callback to the service
+    this.appInitializerService.initialize(loading, (value: boolean) => {
+      this.loaded = value;
+    });
   }
 }
