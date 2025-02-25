@@ -4,3 +4,11 @@
 </ion-app>
 
 <ion-loading *ngIf="!loaded" message="Loading, please wait..."></ion-loading>
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastConfig?.message"
+  [duration]="toastConfig?.duration"
+  [icon]="toastConfig?.icon"
+  [class]="toastConfig?.type"
+  (didDismiss)="openModal(false)"
+></ion-toast>
