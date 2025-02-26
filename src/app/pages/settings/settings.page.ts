@@ -38,5 +38,7 @@ export class SettingsPage implements OnInit {
     await this.storageService.save("online", this.config.online);
     await this.storageService.save("autoDownload", this.config.autoDownload);
     await this.storageService.save("downloadInterval", this.config.downloadInterval);
+
+    this.connectivityService.switchOnlineMode(this.config.online);
   }
 }
