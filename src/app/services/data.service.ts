@@ -4,6 +4,7 @@ import { ChangeType } from '../base/change-type';
 import { OfflineDataService } from './offline-data.service';
 import { OnlineDataService } from './online.service';
 import { ConnectivityService } from './connectivity.service';
+import { ToastService } from './toast.service';
 
 @Injectable()
 export class DataService<T extends IBaseRecord> {
@@ -12,7 +13,8 @@ export class DataService<T extends IBaseRecord> {
   constructor(
     private readonly connectivityService: ConnectivityService,
     private readonly offlineDataService: OfflineDataService,
-    private readonly onlineDataService: OnlineDataService<T>
+    private readonly onlineDataService: OnlineDataService<T>,
+    private readonly toastService: ToastService
   ) {}
 
   init(endpoint: string) {
@@ -39,11 +41,21 @@ export class DataService<T extends IBaseRecord> {
   }
 
   async getAllRecords(refresh = false) {
-    if (refresh && this.connectivityService.isOnline()) {
-      const records = await this.onlineDataService.getAllAsync(this.endpoint);
-      await this.offlineDataService.hardReload(this.endpoint, records);
+    try {
+      if (refresh || this.connectivityService.isOnline()) {
+        const records = await this.onlineDataService.getAllAsync(this.endpoint);
+        await this.offlineDataService.hardReload(this.endpoint, records);
+        this.toastService.showSuccess({
+          message: 'Local data refreshed',
+        });
+      }
+    } catch (e) {
+      this.toastService.showError({
+        message: 'No internet access, try again later',
+      });
+    } finally {
+      return await this.offlineDataService.getAllRecords(this.endpoint);
     }
-    return await this.offlineDataService.getAllRecords(this.endpoint);
   }
 
   async getRecordById(id: string) {
