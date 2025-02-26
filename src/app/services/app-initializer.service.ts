@@ -31,10 +31,9 @@ export class AppInitializerService {
       if (online === null) {
         await this.storageService.save('online', false);
       }
-
+      await this.connectivityService.switchOnlineMode(online);
+      
       if (autoDownload === 'always') {
-        await this.connectivityService.switchOnlineMode(online);
-
         if (online && this.connectivityService.isOnline()) {
           this.updateLoadingMessage(loading, 'Downloading data...');
           await this.downloadService.download();
