@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { NetworkService } from './network.service';
+import { ConnectionType } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,11 @@ export class ConnectivityService {
 
   online$ = this.online.asObservable();
   onlineMode$ = this.onlineMode.asObservable();
+
+  connectionStatus = {
+    connected: false,
+    connectionType: 'unknown' as ConnectionType,
+  };
 
   /**
    * Checks if the application can work online based on internet acces and user preferences.
@@ -33,7 +39,7 @@ export class ConnectivityService {
   }
 
   async checkConnectivity() {
-    const connectionStatus = await this.networkService.checkConnection();
-    this.online.next(connectionStatus.connected && this.onlineMode.value);
+    this.connectionStatus = await this.networkService.checkConnection();
+    this.online.next(this.connectionStatus.connected && this.onlineMode.value);
   }
 }
