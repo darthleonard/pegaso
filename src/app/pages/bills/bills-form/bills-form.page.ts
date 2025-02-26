@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-
 import { DataService } from 'src/app/services/data.service';
 import { HasChangesAlertService } from 'src/app/services/has-changes-alert.service';
 import { FormComponent } from 'src/app/components/form/form/form.component';
@@ -62,7 +61,19 @@ export class BillsFormPage implements OnInit {
       this.location.back();
     } catch (error: any) {
       this.form.error = `Error saving bill: ${error.error.text}`;
-      console.error('Error saving bill:', error);
+    }
+  }
+
+  async onDelete() {
+    if (!this.bill?.id) {
+      return;
+    }
+    try {
+      await this.dataService.deleteRecord(this.bill);
+      this.form.form.reset();
+      this.location.back();
+    } catch (error: any) {
+      this.form.error = `Error deleting bill ${error.error.message}`;
     }
   }
 }

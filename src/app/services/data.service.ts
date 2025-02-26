@@ -55,7 +55,10 @@ export class DataService<T extends IBaseRecord> {
         message: 'No internet access, try again later',
       });
     } finally {
-      return await this.offlineDataService.getAllRecords(this.endpoint);
+      const records = await this.offlineDataService.getAllRecords(
+        this.endpoint
+      );
+      return records.filter((r) => r.changeType !== ChangeType.Deleted);
     }
   }
 
@@ -79,8 +82,33 @@ export class DataService<T extends IBaseRecord> {
     );
   }
 
-  async deleteRecord(id: string) {
-    await this.offlineDataService.deleteRecord(this.endpoint, id);
+  async deleteRecord(record: T) {
+    if (!record.id) {
+      return;
+    }
+
+    if (this.connectivityService.isOnline()) {
+      try {
+        await this.onlineDataService.deleteAsync(this.endpoint, record.id);
+        await this.offlineDataService.deleteRecord(this.endpoint, record.id);
+      } catch (error: any) {
+        record.changeType = ChangeType.Deleted;
+        await this.offlineDataService.updateRecord(
+          this.endpoint,
+          record.id,
+          record
+        );
+        throw error;
+      }
+      return;
+    }
+
+    record.changeType = ChangeType.Deleted;
+    await this.offlineDataService.updateRecord(
+      this.endpoint,
+      record.id,
+      record
+    );
   }
 
   private async uploadUnsyncedRecords() {
@@ -89,7 +117,8 @@ export class DataService<T extends IBaseRecord> {
     ).filter(
       (r) =>
         r.changeType === ChangeType.New ||
-        r.changeType === ChangeType.Edited
+        r.changeType === ChangeType.Edited ||
+        r.changeType === ChangeType.Deleted
     );
 
     for (const record of unsyncedRecords) {
@@ -99,6 +128,10 @@ export class DataService<T extends IBaseRecord> {
 
       if (record.changeType === ChangeType.Edited) {
         await this.onlineDataService.updateAsync(this.endpoint, record);
+      }
+
+      if (record.changeType === ChangeType.Deleted) {
+        await this.onlineDataService.deleteAsync(this.endpoint, record.id);
       }
     }
   }

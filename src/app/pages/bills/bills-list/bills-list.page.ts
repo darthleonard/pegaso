@@ -55,13 +55,4 @@ export class BillsListPage {
       },
     });
   }
-
-  async deleteBill(id: string) {
-    try {
-      await this.dataService.deleteRecord(id);
-      this.loadBills();
-    } catch (error) {
-      this.toastService.showError({ message: `Error deleting bill ${error}` });
-    }
-  }
 }

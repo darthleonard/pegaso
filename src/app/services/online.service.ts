@@ -37,7 +37,12 @@ export class OnlineDataService<T> {
   }
 
   delete(endpoint: string, id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${endpoint}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${endpoint}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {id: id}
+    });
   }
 
   async getAllAsync(endpoint: string): Promise<T[]> {

@@ -35,5 +35,18 @@
     </ion-text>
   </div>
 
-  <ion-button type="submit" [disabled]="form.invalid">Submit</ion-button>
+  <ion-grid fixed>
+    <ion-row class="ion-justify-content-between">
+      <ion-col *ngIf="model.id">
+        <ion-button (click)="onDelete()" color="danger" expand="block">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button type="submit" [disabled]="form.invalid" expand="block">
+          <ion-icon name="save-outline"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </form>
