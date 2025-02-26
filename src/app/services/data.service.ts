@@ -43,6 +43,7 @@ export class DataService<T extends IBaseRecord> {
   async getAllRecords(refresh = false) {
     try {
       if (refresh || this.connectivityService.isOnline()) {
+        await this.uploadUnsyncedRecords();
         const records = await this.onlineDataService.getAllAsync(this.endpoint);
         await this.offlineDataService.hardReload(this.endpoint, records);
         this.toastService.showSuccess({
@@ -80,6 +81,26 @@ export class DataService<T extends IBaseRecord> {
 
   async deleteRecord(id: string) {
     await this.offlineDataService.deleteRecord(this.endpoint, id);
+  }
+
+  private async uploadUnsyncedRecords() {
+    const unsyncedRecords = (
+      await this.offlineDataService.getAllRecords(this.endpoint)
+    ).filter(
+      (r) =>
+        r.changeType === ChangeType.New ||
+        r.changeType === ChangeType.Edited
+    );
+
+    for (const record of unsyncedRecords) {
+      if (record.changeType === ChangeType.New) {
+        await this.onlineDataService.createAsync(this.endpoint, record);
+      }
+
+      if (record.changeType === ChangeType.Edited) {
+        await this.onlineDataService.updateAsync(this.endpoint, record);
+      }
+    }
   }
 
   private generateUUID(): string {
