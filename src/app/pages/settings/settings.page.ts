@@ -25,10 +25,7 @@ export class SettingsPage implements OnInit {
 
   ngOnInit() {
     this.storageService.get("api").then(r => this.config.apiUrl = r ?? environment.apiUrl);
-    this.storageService.get("online").then(r => {
-      this.config.online = r ?? false;
-      this.connectivityService.switchOnlineMode(this.config.online);
-    });
+    this.storageService.get("online").then(r => this.config.online = r);
     this.storageService.get("downloadInterval").then(r => this.config.downloadInterval = r ?? 0);
     this.storageService.get("autoDownload").then(r => this.config.autoDownload = r ?? 'never');
   }
