@@ -24,7 +24,7 @@ export class OnlineDataService<T> {
     return this.http.get<T[]>(`${this.apiUrl}/${endpoint}`);
   }
 
-  getById(endpoint: string, id: number): Observable<T> {
+  getById(endpoint: string, id: string): Observable<T> {
     return this.http.get<T>(`${this.apiUrl}/${endpoint}/${id}`);
   }
 
@@ -36,7 +36,7 @@ export class OnlineDataService<T> {
     });
   }
 
-  delete(endpoint: string, id: number): Observable<void> {
+  delete(endpoint: string, id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${endpoint}/${id}`);
   }
 
@@ -49,7 +49,7 @@ export class OnlineDataService<T> {
     }
   }
 
-  async getByIdAsync(endpoint: string, id: number): Promise<T> {
+  async getByIdAsync(endpoint: string, id: string): Promise<T> {
     try {
       return await lastValueFrom(this.getById(endpoint, id));
     } catch (error) {
@@ -76,7 +76,7 @@ export class OnlineDataService<T> {
     }
   }
 
-  async deleteAsync(endpoint: string, id: number): Promise<void> {
+  async deleteAsync(endpoint: string, id: string): Promise<void> {
     try {
       await lastValueFrom(this.delete(endpoint, id));
     } catch (error) {
