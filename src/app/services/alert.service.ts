@@ -4,13 +4,13 @@ import { AlertController } from '@ionic/angular';
 @Injectable({
   providedIn: 'root',
 })
-export class HasChangesAlertService {
+export class AlertService {
   constructor(private readonly alertController: AlertController) {}
 
-  async presentAlert(message: string): Promise<boolean> {
+  async presentAlert(config: AlertConfig): Promise<boolean> {
     const alert = await this.alertController.create({
-      header: 'Unsaved Changes',
-      message: message,
+      header: config.header,
+      message: config.message,
       buttons: [
         {
           text: 'Cancel',
@@ -20,7 +20,7 @@ export class HasChangesAlertService {
           },
         },
         {
-          text: 'Leave',
+          text: 'Confirm',
           handler: () => {
             return true;
           },
@@ -35,4 +35,9 @@ export class HasChangesAlertService {
       });
     });
   }
+}
+
+export type AlertConfig = {
+  header: string,
+  message: string,
 }

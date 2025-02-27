@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { DataService } from 'src/app/services/data.service';
-import { HasChangesAlertService } from 'src/app/services/has-changes-alert.service';
+import { AlertService } from 'src/app/services/alert.service';
 import { FormComponent } from 'src/app/components/form/form/form.component';
 import { Bill } from '../bill';
 import { billFormMetadata } from './bills-form.metadata';
@@ -20,7 +20,7 @@ export class BillsFormPage implements OnInit {
     private readonly router: Router,
     private readonly location: Location,
     private readonly dataService: DataService<Bill>,
-    private readonly hasChangesAlertService: HasChangesAlertService
+    private readonly alertService: AlertService
   ) {
     this.dataService.init('bills');
   }
@@ -47,9 +47,10 @@ export class BillsFormPage implements OnInit {
   }
 
   showUnsavedChangesAlert(): Promise<boolean> {
-    return this.hasChangesAlertService.presentAlert(
-      'You have unsaved changes. Do you really want to leave?'
-    );
+    return this.alertService.presentAlert({
+      header: 'You have unsaved changes',
+      message: 'Do you want to discard changes?',
+    });
   }
 
   async onFormSubmit(formData: any) {

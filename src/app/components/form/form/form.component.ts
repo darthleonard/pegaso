@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HasChangesAlertService } from 'src/app/services/has-changes-alert.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-form',
@@ -26,7 +26,7 @@ export class FormComponent implements OnInit {
 
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly hasChangesAlertService: HasChangesAlertService
+    private readonly alertService: AlertService
   ) {
     this.form = this.formBuilder.group({});
   }
@@ -39,7 +39,29 @@ export class FormComponent implements OnInit {
     return this.form.dirty;
   }
 
-  buildForm() {
+  async onSubmit() {
+    this.error = null;
+    if (this.form.valid) {
+      this.formSubmitted.emit({
+        ...this.model,
+        ...this.form.value,
+      });
+    } else {
+      this.error = 'Form is invalid';
+    }
+  }
+
+  async onDelete() {
+    const confirmation = await this.alertService.presentAlert({
+      header: 'Delete',
+      message: 'Are you sure you want to delete?',
+    });
+    if (confirmation) {
+      this.delete.emit();
+    }
+  }
+
+  private buildForm() {
     this.metadata.forEach((field) => {
       const control = this.formBuilder.control(
         this.model[field.field],
@@ -49,7 +71,7 @@ export class FormComponent implements OnInit {
     });
   }
 
-  getValidators(validators?: string[]) {
+  private getValidators(validators?: string[]) {
     const formValidators: any[] = [];
 
     validators?.forEach((validator) => {
@@ -63,31 +85,5 @@ export class FormComponent implements OnInit {
     });
 
     return formValidators;
-  }
-
-  async onSubmit() {
-    const confirmation = await this.hasChangesAlertService.presentAlert(
-      'Confirm save?'
-    );
-    if (confirmation) {
-      this.error = null;
-      if (this.form.valid) {
-        this.formSubmitted.emit({
-          ...this.model,
-          ...this.form.value,
-        });
-      } else {
-        this.error = 'Form is invalid';
-      }
-    }
-  }
-
-  async onDelete() {
-    const confirmation = await this.hasChangesAlertService.presentAlert(
-      'Confirm delete?'
-    );
-    if (confirmation) {
-      this.delete.emit();
-    }
   }
 }
