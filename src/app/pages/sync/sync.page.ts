@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { localDatabase } from 'src/app/database/local-database';
 import { OfflineDataService } from 'src/app/services/offline-data.service';
 import { ChangeType } from 'src/app/base/change-type';
-import { Bill } from '../bills/bill';
 
 @Component({
   selector: 'app-sync',
@@ -12,10 +11,6 @@ import { Bill } from '../bills/bill';
 })
 export class SyncPage implements OnInit {
   constructor(private readonly offlineDataService: OfflineDataService) {}
-
-  newBills: Bill[] = [];
-  editedBills: Bill[] = [];
-  deletedBills: Bill[] = [];
 
   tables: {
     name: string;
