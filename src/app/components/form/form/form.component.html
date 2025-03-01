@@ -12,6 +12,10 @@
           [readonly]="isEditing"
         ></app-date-month-input>
       </ng-container>
+      <ng-container *ngSwitchCase="'date'">
+        <ion-label position="stacked">{{ field.label }}</ion-label>
+        <ion-input [formControlName]="field.field" type="date"></ion-input>
+      </ng-container>
       <ng-container *ngSwitchCase="'number'">
         <ion-label position="stacked">{{ field.label }}</ion-label>
         <ion-input [formControlName]="field.field" type="number"></ion-input>
