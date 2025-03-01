@@ -16,6 +16,10 @@
         <ion-label position="stacked">{{ field.label }}</ion-label>
         <ion-input [formControlName]="field.field" type="date"></ion-input>
       </ng-container>
+      <ng-container *ngSwitchCase="'datetime'">
+        <ion-label position="stacked">{{ field.label }}</ion-label>
+        <ion-input [formControlName]="field.field" type="datetime-local"></ion-input>
+      </ng-container>
       <ng-container *ngSwitchCase="'number'">
         <ion-label position="stacked">{{ field.label }}</ion-label>
         <ion-input [formControlName]="field.field" type="number"></ion-input>
