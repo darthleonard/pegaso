@@ -1,13 +1,19 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { FuelPage } from './fuel.page';
+import { UnsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
+import { FuelsListPage } from './fuel-list/fuels-list.page';
+import { FuelFormPage } from './fuel-form/fuel-form.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: FuelPage
-  }
+    component: FuelsListPage,
+  },
+  {
+    path: 'fuel-form',
+    component: FuelFormPage,
+    canDeactivate: [UnsavedChangesGuard],
+  },
 ];
 
 @NgModule({

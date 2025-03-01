@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
-
-import { FuelPageRoutingModule } from './fuel-routing.module';
-
-import { FuelPage } from './fuel.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { FuelPageRoutingModule } from './fuel-routing.module';
+import { FuelsListPage } from './fuel-list/fuels-list.page';
+import { FuelFormPage } from './fuel-form/fuel-form.page';
 
 @NgModule({
   imports: [
@@ -18,6 +16,6 @@ import { ComponentsModule } from 'src/app/components/components.module';
     ComponentsModule,
     FuelPageRoutingModule
   ],
-  declarations: [FuelPage]
+  declarations: [FuelsListPage, FuelFormPage]
 })
 export class FuelPageModule {}

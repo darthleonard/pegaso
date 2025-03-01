@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 require_once 'core/database.php';
 require_once 'core/router.php';
 require_once 'controllers/bill-controller.php';
+require_once 'controllers/fuel-controller.php';
 
 $database = new DB();
 $db = $database->getConnection();
@@ -27,11 +28,23 @@ $router->add('PUT', '/api/index.php/bills', [$billController, 'updateBill']);
 $router->add('DELETE', '/api/index.php/bills', [$billController, 'deleteBill']);
 $router->add('GET', '/api/index.php/bills/filter', [$billController, 'getBillsByDate']);
 
+$fuelController = new FuelController($db);
+$router->add('GET', '/api/index.php/fuel', [$fuelController, 'getAllFuels']);
+$router->add('GET', '/api/index.php/fuel/(:id)', [$fuelController, 'getFuelById']);
+$router->add('POST', '/api/index.php/fuel', [$fuelController, 'createFuel']);
+$router->add('PUT', '/api/index.php/fuel', [$fuelController, 'updateFuel']);
+$router->add('DELETE', '/api/index.php/fuel', [$fuelController, 'deleteFuel']);
+$router->add('GET', '/api/index.php/fuel/filter', [$fuelController, 'getFuelsByDate']);
+
 // to add user controller
 // $userController = new UserController($db);
 // $router->add('GET', '/users', [$userController, 'getAllUsers']);
 // $router->add('POST', '/users', [$userController, 'createUser']);
 // $router->add('GET', '/users/id', [$userController, 'getUserById']);
 
-$router->dispatch();
+try {
+    $router->dispatch();
+} catch(Exception $e) {
+    echo $e;
+}
 ?>
