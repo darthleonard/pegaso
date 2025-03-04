@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LoadingController, Platform } from '@ionic/angular';
-import { AppInitializerService } from './services/app-initializer.service';
-import { ToastModel, ToastService, ToastType } from './services/toast.service';
-import { filter, Subject, takeUntil } from 'rxjs';
 import { App } from '@capacitor/app';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { Subject, takeUntil } from 'rxjs';
+import { AppInitializerService } from './services/app-initializer.service';
+import { ToastModel, ToastService } from './services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService
   ) {
     this.platform.ready().then(() => {
+      StatusBar.setOverlaysWebView({ overlay: false });
+      StatusBar.setStyle({ style: Style.Dark });
       App.addListener('appStateChange', (state) => {
         if (!state.isActive) {
           this.destroy$.next();
@@ -30,12 +33,12 @@ export class AppComponent implements OnInit, OnDestroy {
       this.toastService.config$
         .pipe(takeUntil(this.destroy$))
         .subscribe((toastConfig) => {
-          if(!!toastConfig) {
+          if (!!toastConfig) {
             this.toastConfig = {
               message: toastConfig.message,
               type: toastConfig.type,
               duration: toastConfig.duration,
-              icon: toastConfig.icon
+              icon: toastConfig.icon,
             };
             this.openModal(true);
           } else {
