@@ -31,12 +31,8 @@ export class ConnectivityService {
     return this.online.value;
   }
 
-  async switchOnlineMode(enable?: boolean) {
-    if (enable === undefined || enable !== this.onlineMode.value) {
-      this.onlineMode.next(!this.onlineMode.value);
-    } else {
-      this.onlineMode.next(enable);
-    }
+  async switchOnlineMode(enable: boolean) {
+    this.onlineMode.next(enable);
     await this.checkConnectivity();
   }
 
