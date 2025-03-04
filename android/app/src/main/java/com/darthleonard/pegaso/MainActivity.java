@@ -1,4 +1,4 @@
-package darthleonard.pegaso;
+package com.darthleonard.pegaso;
 
 import com.getcapacitor.BridgeActivity;
 

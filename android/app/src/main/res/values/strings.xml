@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">pegaso</string>
-    <string name="title_activity_main">pegaso</string>
-    <string name="package_name">darthleonard.pegaso</string>
-    <string name="custom_url_scheme">darthleonard.pegaso</string>
+    <string name="app_name">Pegaso</string>
+    <string name="title_activity_main">Pegaso</string>
+    <string name="package_name">com.darthleonard.pegaso</string>
+    <string name="custom_url_scheme">com.darthleonard.pegaso</string>
 </resources>

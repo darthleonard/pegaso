@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "darthleonard.pegaso"
+    namespace "com.darthleonard.pegaso"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "darthleonard.pegaso"
+        applicationId "com.darthleonard.pegaso"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
