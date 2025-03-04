@@ -24,19 +24,17 @@ export class AppInitializerService {
       if (apiUrl === null) {
         await this.storageService.save('api', '');
       }
-      console.log('api', apiUrl);
 
       const autoDownload = await this.storageService.get('autoDownload');
       if (autoDownload === null) {
         await this.storageService.save('autoDownload', 'never');
       }
-      console.log('auto download', autoDownload);
 
-      const online = await this.storageService.get('online');
+      let online = await this.storageService.get('online');
       if (online === null) {
-        await this.storageService.save('online', false);
+        online = false;
+        await this.storageService.save('online', online);
       }
-      console.log('online', online);
       await this.connectivityService.switchOnlineMode(online);
 
       if (autoDownload === 'always') {
