@@ -31,11 +31,17 @@ export class ConnectivityService {
     return this.online.value;
   }
 
+  /**
+   * Set user preferences.
+   */
   async switchOnlineMode(enable: boolean) {
     this.onlineMode.next(enable);
     await this.checkConnectivity();
   }
 
+  /**
+   * Set the application to work fully online based on internet access and user preferences.
+   */
   async checkConnectivity() {
     this.connectionStatus = await this.networkService.checkConnection();
     this.online.next(this.connectionStatus.connected && this.onlineMode.value);
