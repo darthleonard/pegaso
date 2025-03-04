@@ -2,18 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OnlineDataService<T> {
-  private apiUrl = environment.apiUrl;
+  private static apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private readonly http: HttpClient,
+    private readonly storageService: StorageService
+  ) {
+    this.storageService.get('api').then((r) => OnlineDataService.updateApiUrl(r));
+  }
+
+  static updateApiUrl(apiUrl: string) {
+    this.apiUrl = apiUrl;
+  }
 
   create(endpoint: string, item: T): Observable<T> {
-    return this.http.post<T>(`${this.apiUrl}/${endpoint}`, item, {
+    return this.http.post<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
@@ -21,15 +30,15 @@ export class OnlineDataService<T> {
   }
 
   getAll(endpoint: string): Observable<T[]> {
-    return this.http.get<T[]>(`${this.apiUrl}/${endpoint}`);
+    return this.http.get<T[]>(`${OnlineDataService.apiUrl}/${endpoint}`);
   }
 
   getById(endpoint: string, id: string): Observable<T> {
-    return this.http.get<T>(`${this.apiUrl}/${endpoint}/${id}`);
+    return this.http.get<T>(`${OnlineDataService.apiUrl}/${endpoint}/${id}`);
   }
 
   update(endpoint: string, item: T): Observable<T> {
-    return this.http.put<T>(`${this.apiUrl}/${endpoint}`, item, {
+    return this.http.put<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
@@ -37,11 +46,11 @@ export class OnlineDataService<T> {
   }
 
   delete(endpoint: string, id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${endpoint}`, {
+    return this.http.delete<void>(`${OnlineDataService.apiUrl}/${endpoint}`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-      body: {id: id}
+      body: { id: id },
     });
   }
 

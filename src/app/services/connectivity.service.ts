@@ -7,9 +7,11 @@ import { ConnectionType } from '@capacitor/network';
   providedIn: 'root',
 })
 export class ConnectivityService {
-  private online: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private online: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   private onlineMode: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
-    true
+    false
   );
 
   constructor(private networkService: NetworkService) {}
