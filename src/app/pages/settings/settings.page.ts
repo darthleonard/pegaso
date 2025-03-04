@@ -10,7 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
   templateUrl: './settings.page.html',
   standalone: false,
 })
-export class SettingsPage implements OnInit {
+export class SettingsPage {
   constructor(
     private readonly storageService: StorageService,
     private readonly downloadService: DownloadService,
@@ -25,7 +25,7 @@ export class SettingsPage implements OnInit {
     downloadInterval: 0
   };
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.storageService.get("api").then(r => this.config.apiUrl = r);
     this.storageService.get("online").then(r => this.config.online = r);
     this.storageService.get("downloadInterval").then(r => this.config.downloadInterval = r ?? 0);
@@ -46,5 +46,6 @@ export class SettingsPage implements OnInit {
     OnlineDataService.updateApiUrl(this.config.apiUrl);
 
     await this.connectivityService.switchOnlineMode(this.config.online);
+    this.toastService.showSuccess({ message: 'Settings saved' });
   }
 }
