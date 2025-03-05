@@ -5,6 +5,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { Subject, takeUntil } from 'rxjs';
 import { AppInitializerService } from './services/app-initializer.service';
 import { ToastModel, ToastService } from './services/toast.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,10 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly toastService: ToastService
   ) {
     this.platform.ready().then(() => {
-      StatusBar.setOverlaysWebView({ overlay: false });
-      StatusBar.setStyle({ style: Style.Dark });
+      if (Capacitor.isNativePlatform()) {
+        StatusBar.setOverlaysWebView({ overlay: false });
+        StatusBar.setStyle({ style: Style.Dark });
+      }
       App.addListener('appStateChange', (state) => {
         if (!state.isActive) {
           this.destroy$.next();
