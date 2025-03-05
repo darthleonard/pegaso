@@ -36,6 +36,9 @@ export class BillsListPage {
   async loadBills(refresh = false) {
     try {
       this.bills = await this.dataService.getAllRecords(refresh);
+      this.bills.sort(
+        (a, b) => new Date(b.month).getTime() - new Date(a.month).getTime()
+      );
     } catch (error) {
       this.toastService.showError({ message: `Error loading bills ${error}` });
     }

@@ -36,6 +36,9 @@ export class FuelsListPage {
   async loadfuels(refresh = false) {
     try {
       this.fuels = await this.dataService.getAllRecords(refresh);
+      this.fuels.sort(
+        (a, b) => new Date(b.fill_date).getTime() - new Date(a.fill_date).getTime()
+      );
     } catch (error) {
       this.toastService.showError({ message: `Error loading fuels ${error}` });
     }
