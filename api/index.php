@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 require_once 'core/database.php';
+require_once 'core/object-mapper.php';
 require_once 'core/router.php';
 require_once 'controllers/bill-controller.php';
 require_once 'controllers/fuel-controller.php';
@@ -20,7 +21,6 @@ $db = $database->getConnection();
 $router = new Router();
 
 $billController = new BillController($db);
-
 $router->add('GET', '/api/index.php/bills', [$billController, 'getAllBills']);
 $router->add('GET', '/api/index.php/bills/(:id)', [$billController, 'getBillById']);
 $router->add('POST', '/api/index.php/bills', [$billController, 'createBill']);

@@ -31,11 +31,7 @@ class FuelController {
 
     public function createFuel() {
         $data = json_decode(file_get_contents("php://input"));
-        $this->fuel->id = $data->id;
-        $this->fuel->fill_date = $data->fill_date;
-        $this->fuel->total = $data->total;
-        $this->fuel->fuel_amount = $data->fuel_amount;
-        $this->fuel->odometer = $data->odometer;
+        $this->fuel = ObjectMapper::fromArray((array) $data, $this->fuel);
         
         if ($this->fuel->create()) {
             echo json_encode($this->fuel);
@@ -46,11 +42,7 @@ class FuelController {
 
     public function updateFuel() {
         $data = json_decode(file_get_contents("php://input"));
-        $this->fuel->id = $data->id;
-        $this->fuel->fill_date = $data->fill_date;
-        $this->fuel->total = $data->total;
-        $this->fuel->fuel_amount = $data->fuel_amount;
-        $this->fuel->odometer = $data->odometer;
+        $this->fuel = ObjectMapper::fromArray((array) $data, $this->fuel);
 
         if ($this->fuel->update()) {
             echo json_encode($this->fuel);
