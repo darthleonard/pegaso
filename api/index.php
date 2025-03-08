@@ -22,6 +22,7 @@ require_once 'core/object-mapper.php';
 require_once 'core/router.php';
 require_once 'controllers/bill-controller.php';
 require_once 'controllers/fuel-controller.php';
+require_once 'controllers/shoppings-controller.php';
 
 $database = new DB();
 $db = $database->getConnection();
@@ -43,6 +44,11 @@ $router->add('POST', '/api/index.php/fuel', [$fuelController, 'createFuel']);
 $router->add('PUT', '/api/index.php/fuel', [$fuelController, 'updateFuel']);
 $router->add('DELETE', '/api/index.php/fuel', [$fuelController, 'deleteFuel']);
 $router->add('GET', '/api/index.php/fuel/filter', [$fuelController, 'getFuelsByDate']);
+
+$shoppingsController = new ShoppingsController($db);
+$router->add('GET', '/api/index.php/shoppings', [$shoppingsController, 'getAllShoppings']);
+$router->add('POST', '/api/index.php/shoppings', [$shoppingsController, 'saveShopping']);
+$router->add('PUT', '/api/index.php/shoppings', [$shoppingsController, 'saveShopping']);
 
 // to add user controller
 // $userController = new UserController($db);
