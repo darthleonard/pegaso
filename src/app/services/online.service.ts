@@ -12,14 +12,16 @@ export class OnlineDataService<T> {
   private readonly apiKey = 'MY_SECRET_API_KEY';
   private readonly headers = new HttpHeaders({
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${this.apiKey}`,
-  })
+    Authorization: `Bearer ${this.apiKey}`,
+  });
 
   constructor(
     private readonly http: HttpClient,
     private readonly storageService: StorageService
   ) {
-    this.storageService.get('api').then((r) => OnlineDataService.updateApiUrl(r));
+    this.storageService
+      .get('api')
+      .then((r) => OnlineDataService.updateApiUrl(r));
   }
 
   static updateApiUrl(apiUrl: string) {
