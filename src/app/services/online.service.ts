@@ -9,6 +9,11 @@ import { StorageService } from './storage.service';
 })
 export class OnlineDataService<T> {
   private static apiUrl: string;
+  private readonly apiKey = 'MY_SECRET_API_KEY';
+  private readonly headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${this.apiKey}`,
+  })
 
   constructor(
     private readonly http: HttpClient,
@@ -23,33 +28,31 @@ export class OnlineDataService<T> {
 
   create(endpoint: string, item: T): Observable<T> {
     return this.http.post<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
+      headers: this.headers,
     });
   }
 
   getAll(endpoint: string): Observable<T[]> {
-    return this.http.get<T[]>(`${OnlineDataService.apiUrl}/${endpoint}`);
+    return this.http.get<T[]>(`${OnlineDataService.apiUrl}/${endpoint}`, {
+      headers: this.headers,
+    });
   }
 
   getById(endpoint: string, id: string): Observable<T> {
-    return this.http.get<T>(`${OnlineDataService.apiUrl}/${endpoint}/${id}`);
+    return this.http.get<T>(`${OnlineDataService.apiUrl}/${endpoint}/${id}`, {
+      headers: this.headers,
+    });
   }
 
   update(endpoint: string, item: T): Observable<T> {
     return this.http.put<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
+      headers: this.headers,
     });
   }
 
   delete(endpoint: string, id: string): Observable<void> {
     return this.http.delete<void>(`${OnlineDataService.apiUrl}/${endpoint}`, {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
+      headers: this.headers,
       body: { id: id },
     });
   }

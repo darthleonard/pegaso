@@ -9,6 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit();
 }
 
+$headers = getallheaders();
+$apiKey = isset($headers['Authorization']) ? str_replace('Bearer ', '', $headers['Authorization']) : '';
+if ($apiKey !== 'MY_SECRET_API_KEY') {
+    header('HTTP/1.1 403 Forbidden');
+    echo json_encode(['error' => 'Forbidden']);
+    exit;
+}
+
 require_once 'core/database.php';
 require_once 'core/object-mapper.php';
 require_once 'core/router.php';
