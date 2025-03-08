@@ -15,6 +15,7 @@ export const fuelFormMetadata = [
     field: 'fuel_amount',
     label: 'Cantidad (lt)',
     type: 'number',
+    validators: ['required'],
   },
   {
     field: 'odometer',
