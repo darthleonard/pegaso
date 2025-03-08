@@ -34,6 +34,10 @@ const routes: Routes = [
     path: 'sync',
     loadChildren: () => import('./pages/sync/sync.module').then( m => m.SyncPageModule)
   },
+  {
+    path: 'shoppings',
+    loadChildren: () => import('./pages/shoppings/shoppings.module').then( m => m.ShoppingsPageModule)
+  },
 
 ];
 
