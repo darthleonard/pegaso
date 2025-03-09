@@ -5,7 +5,18 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  items list
+  <div *ngIf="!shoppingItems">loading...</div>
+  <div *ngIf="shoppingItems && !shoppingItems.length">no records found</div>
+
+  <ion-list>
+    <ion-item *ngFor="let item of shoppingItems" (click)="onClick(item)">
+        <ion-label>
+          <h2>{{ item.item_name }}</h2>
+          <p>{{ item.description }}</p>
+        </ion-label>
+      </ion-item>
+      
+  </ion-list>
   
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="onCreateClick()">
