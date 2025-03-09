@@ -63,6 +63,7 @@ export class SettingsPage {
     OnlineDataService.updateApiUrl(this.config.apiUrl);
 
     await this.connectivityService.switchOnlineMode(this.config.online);
+    this.originalConfig = { ...this.config };
     this.toastService.showSuccess({ message: 'Settings saved' });
   }
 }
