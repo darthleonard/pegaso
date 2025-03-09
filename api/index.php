@@ -47,6 +47,14 @@ switch($endpoint) {
         $router->add('DELETE', '/api/index.php/fuel', [$fuelController, 'deleteFuel']);
         $router->add('GET', '/api/index.php/fuel/filter', [$fuelController, 'getFuelsByDate']);
         break;
+    case 'shoppingItems':
+        require_once 'controllers/shopping-items-controller.php';
+        $shoppingItemsController = new ShoppingItemsController($db);
+        $router->add('GET', '/api/index.php/shoppingItems', [$shoppingItemsController, 'getAllshoppingItems']);
+        $router->add('POST', '/api/index.php/shoppingItems', [$shoppingItemsController, 'createShoppingItem']);
+        $router->add('PUT', '/api/index.php/shoppingItems', [$shoppingItemsController, 'updateShoppingItem']);
+        $router->add('DELETE', '/api/index.php/shoppingItems', [$shoppingItemsController, 'deleteShoppingItem']);
+        break;
     case 'shoppings':
         require_once 'controllers/shoppings-controller.php';
         $shoppingsController = new ShoppingsController($db);
