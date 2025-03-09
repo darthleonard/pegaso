@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { isEqual } from 'lodash';
+import { AlertService } from 'src/app/services/alert.service';
 import { ConnectivityService } from 'src/app/services/connectivity.service';
 import { DownloadService } from 'src/app/services/download.service';
 import { OnlineDataService } from 'src/app/services/online.service';
@@ -11,10 +13,13 @@ import { ToastService } from 'src/app/services/toast.service';
   standalone: false,
 })
 export class SettingsPage {
+  private originalConfig = {};
+
   constructor(
     private readonly storageService: StorageService,
     private readonly downloadService: DownloadService,
     private readonly connectivityService: ConnectivityService,
+    private readonly alertService: AlertService,
     private readonly toastService: ToastService
   ) { }
 
@@ -30,6 +35,18 @@ export class SettingsPage {
     this.storageService.get("online").then(r => this.config.online = r);
     this.storageService.get("downloadInterval").then(r => this.config.downloadInterval = r ?? 0);
     this.storageService.get("autoDownload").then(r => this.config.autoDownload = r);
+    this.originalConfig = { ...this.config };
+  }
+
+  hasChanges(): boolean {
+    return !isEqual(this.originalConfig, this.config);
+  }
+
+  showUnsavedChangesAlert(): Promise<boolean> {
+    return this.alertService.presentAlert({
+      header: 'You have unsaved changes',
+      message: 'Do you want to discard changes?',
+    });
   }
 
   async onSave() {
