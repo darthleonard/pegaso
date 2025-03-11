@@ -26,3 +26,11 @@ export class StorageService {
     await this.storage.remove(key);
   }
 }
+
+export const StorageKeys = {
+  API: 'api',
+  API_KEY: 'apiKey',
+  ONLINE: 'online',
+  AUTO_DOWNLOAD: 'autoDownload',
+  DOWNLOAD_INTERVAL: 'downloadInterval'
+}

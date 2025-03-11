@@ -2,32 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
-import { StorageService } from './storage.service';
+import { GlobalstateService } from './global-state.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OnlineDataService<T> {
-  private static apiUrl: string;
-
-  private readonly apiKey = 'MY_SECRET_API_KEY';
-  private readonly headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${this.apiKey}`,
-  });
-
   constructor(
     private readonly http: HttpClient,
-    private readonly storageService: StorageService
-  ) {
-    this.storageService
-      .get('api')
-      .then((r) => OnlineDataService.updateApiUrl(r));
-  }
-
-  static updateApiUrl(apiUrl: string) {
-    this.apiUrl = apiUrl;
-  }
+    private readonly globalstateService: GlobalstateService
+  ) { }
 
   async getAllAsync(endpoint: string): Promise<T[]> {
     try {
@@ -75,32 +59,47 @@ export class OnlineDataService<T> {
   }
 
   private create(endpoint: string, item: T): Observable<T> {
-    return this.http.post<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
-      headers: this.headers,
+    return this.http.post<T>(`${this.globalstateService.apiUrl}/${endpoint}`, item, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.globalstateService.apiKey}`,
+      }),
     });
   }
 
   private getAll(endpoint: string): Observable<T[]> {
-    return this.http.get<T[]>(`${OnlineDataService.apiUrl}/${endpoint}`, {
-      headers: this.headers,
+    return this.http.get<T[]>(`${this.globalstateService.apiUrl}/${endpoint}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.globalstateService.apiKey}`,
+      }),
     });
   }
 
   private getById(endpoint: string, id: string): Observable<T> {
-    return this.http.get<T>(`${OnlineDataService.apiUrl}/${endpoint}/${id}`, {
-      headers: this.headers,
+    return this.http.get<T>(`${this.globalstateService.apiUrl}/${endpoint}/${id}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.globalstateService.apiKey}`,
+      }),
     });
   }
 
   private update(endpoint: string, item: T): Observable<T> {
-    return this.http.put<T>(`${OnlineDataService.apiUrl}/${endpoint}`, item, {
-      headers: this.headers,
+    return this.http.put<T>(`${this.globalstateService.apiUrl}/${endpoint}`, item, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.globalstateService.apiKey}`,
+      }),
     });
   }
 
   private delete(endpoint: string, id: string): Observable<void> {
-    return this.http.delete<void>(`${OnlineDataService.apiUrl}/${endpoint}`, {
-      headers: this.headers,
+    return this.http.delete<void>(`${this.globalstateService.apiUrl}/${endpoint}`, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.globalstateService.apiKey}`,
+      }),
       body: { id: id },
     });
   }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageService } from './storage.service';
 import { ConnectivityService } from './connectivity.service';
 import { DownloadService } from './download.service';
+import { GlobalstateService } from './global-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,9 @@ import { DownloadService } from './download.service';
 export class AppInitializerService {
   constructor(
     private readonly storageService: StorageService,
-    private readonly connectivityService: ConnectivityService,
-    private readonly downloadService: DownloadService
+    private readonly downloadService: DownloadService,
+    private readonly globalStateService: GlobalstateService,
+    private readonly connectivityService: ConnectivityService
   ) {}
 
   async initialize(
@@ -24,6 +26,13 @@ export class AppInitializerService {
       if (apiUrl === null) {
         await this.storageService.save('api', '');
       }
+      this.globalStateService.apiUrl = apiUrl;
+
+      const apiKey = await this.storageService.get('apiKey');
+      if (apiKey === null) {
+        await this.storageService.save('apiKey', '');
+      }
+      this.globalStateService.apiKey = apiKey;
 
       const autoDownload = await this.storageService.get('autoDownload');
       if (autoDownload === null) {
@@ -43,7 +52,7 @@ export class AppInitializerService {
           await this.downloadService.download();
         }
       }
-
+      
       setLoaded(true);
     } catch (error) {
       console.error('Error during initialization:', error);

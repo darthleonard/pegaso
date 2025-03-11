@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, lastValueFrom } from 'rxjs';
 import { StorageService } from './storage.service';
 import { ToastService } from './toast.service';
+import { GlobalstateService } from './global-state.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,29 +12,17 @@ import { ToastService } from './toast.service';
 export class DownloadService {
   private downloadFinished: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
-  private apiUrl!: string;
-  private readonly apiKey = 'MY_SECRET_API_KEY';
-  private readonly headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    Authorization: `Bearer ${this.apiKey}`,
-  });
-
+  
   constructor(
     private readonly http: HttpClient,
-    private readonly storageService: StorageService,
-    private readonly toastService: ToastService
-  ) {
-    this.storageService.get('api').then((r) => this.updateApiUrl(r));
-  }
+    private readonly toastService: ToastService,
+    private readonly globalStateService: GlobalstateService
+  ) { }
 
   downloadFinished$ = this.downloadFinished.asObservable();
 
-  updateApiUrl(apiUrl: string) {
-    this.apiUrl = apiUrl;
-  }
-
   async download() {
-    if (!this.apiUrl.length) {
+    if (!this.globalStateService.apiUrl.length) {
       this.toastService.showError({
         message: 'Download failed, API is not configured',
       });
@@ -43,8 +32,11 @@ export class DownloadService {
     for (const table of localDatabase.tables) {
       console.log('Downloading ', table.name);
       const records = await lastValueFrom(
-        this.http.get<any[]>(`${this.apiUrl}/${table.name}`, {
-          headers: this.headers,
+        this.http.get<any[]>(`${this.globalStateService.apiUrl}/${table.name}`, {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${this.globalStateService.apiKey}`,
+          }),
         })
       );
       await localDatabase.table(table.name).clear();
