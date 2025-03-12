@@ -8,7 +8,7 @@ class ShoppingsController {
    }
 
    public function getAllShoppings() {
-      $stmt = $this->conn->prepare("SELECT id, list_name, effective_date FROM shoppingLists");
+      $stmt = $this->conn->prepare("SELECT id, list_name, effective_date, items_quantity, total, completed FROM shoppingLists");
       $stmt->execute();
       $shoppingLists = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
