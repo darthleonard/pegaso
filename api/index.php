@@ -55,12 +55,12 @@ switch($endpoint) {
         $router->add('PUT', '/api/index.php/shoppingItems', [$shoppingItemsController, 'updateShoppingItem']);
         $router->add('DELETE', '/api/index.php/shoppingItems', [$shoppingItemsController, 'deleteShoppingItem']);
         break;
-    case 'shoppings':
+    case 'shoppingLists':
         require_once 'controllers/shoppings-controller.php';
         $shoppingsController = new ShoppingsController($db);
-        $router->add('GET', '/api/index.php/shoppings', [$shoppingsController, 'getAllShoppings']);
-        $router->add('POST', '/api/index.php/shoppings', [$shoppingsController, 'saveShopping']);
-        $router->add('PUT', '/api/index.php/shoppings', [$shoppingsController, 'saveShopping']);
+        $router->add('GET', '/api/index.php/shoppingLists', [$shoppingsController, 'getAllShoppings']);
+        $router->add('POST', '/api/index.php/shoppingLists', [$shoppingsController, 'saveShopping']);
+        $router->add('PUT', '/api/index.php/shoppingLists', [$shoppingsController, 'saveShopping']);
         break;
     default:
         http_response_code(404);

@@ -27,7 +27,7 @@ class ShoppingsController {
          $shoppingList['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
       }
 
-      echo json_encode(['status' => 'success', 'data' => $shoppingLists]);
+      echo json_encode($shoppingLists);
    }
 
    public function saveShopping() {
