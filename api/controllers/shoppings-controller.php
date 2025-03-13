@@ -18,6 +18,7 @@ class ShoppingsController {
       }
 
       foreach ($shoppingLists as &$shoppingList) {
+         $shoppingList['completed'] = (bool)$shoppingList['completed'];
          $stmt = $this->conn->prepare(
             "SELECT si.id, i.item_name, i.description, si.unit_price, si.quantity, si.notes 
             FROM shoppingListItems si 
@@ -37,10 +38,10 @@ class ShoppingsController {
       if (isset($data['list_name']) && isset($data['items']) && is_array($data['items'])) {
          $listId = $data['id'];
          $stmt = $this->conn->prepare(
-            "INSERT INTO shoppingLists (id, list_name) 
-            VALUES (?, ?) 
+            "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
+            VALUES (?, ?, ?, ?, ?) 
             ON DUPLICATE KEY UPDATE list_name = VALUES(list_name)");
-         $stmt->execute([$listId, $data['list_name']]);
+         $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], (int)$data['completed']]);
 
          foreach ($data['items'] as $item) {
             $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE id = ?");
