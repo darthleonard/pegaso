@@ -14,6 +14,7 @@ export class FormComponent implements OnInit {
     field: string;
     label: string;
     type: string;
+    readonly?: boolean;
     validators?: string[];
   }[];
 
@@ -64,7 +65,7 @@ export class FormComponent implements OnInit {
   private buildForm() {
     this.metadata.forEach((field) => {
       const control = this.formBuilder.control(
-        this.model[field.field],
+        { value: this.model[field.field], disabled: field.readonly },
         this.getValidators(field.validators)
       );
       this.form.addControl(field.field, control);
