@@ -5,6 +5,7 @@ import { FormComponent } from 'src/app/components/form/form/form.component';
 import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { shoppingListFormMetadata } from './shopping-list-form.metadata';
+import { ShoppingList } from '../shopping-list';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -25,14 +26,14 @@ export class ShoppingListFormPage implements OnInit {
   metadata = shoppingListFormMetadata
   title = '';
   isEditing = false;
-  shoppingList: any | null = null;
+  shoppingList = {} as ShoppingList;
 
   ngOnInit() {
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
     let titlePrefix = 'Create';
-    this.shoppingList = {};
     if (navigationState && navigationState['list']) {
       this.shoppingList = navigationState['list'];
+      this.shoppingList.completed = this.shoppingList.completed ? 1 : 0;
       this.isEditing = true;
       titlePrefix = 'Edit';
     }
