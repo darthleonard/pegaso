@@ -1,5 +1,11 @@
-<app-header title="List Form" defaultHref="/shopping-lists"></app-header>
+<app-header [title]="title" defaultHref="/shopping-lists"></app-header>
 
-<ion-content [fullscreen]="true">
-  List Form
+<ion-content [fullscreen]="true" class="ion-padding">
+  <app-form
+    [model]="shoppingList"
+    [metadata]="metadata"
+    (formSubmitted)="onFormSubmit($event)"
+    (delete)="onDelete()"
+  >
+  </app-form>
 </ion-content>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { UnsavedChangesGuard } from 'src/app/guards/unsaved-changes.guard';
 import { ShoppingListsPage } from './lists-list/shopping-lists.page';
 import { ShoppingListFormPage } from './list-form/shopping-list-form.page';
 
@@ -10,8 +11,9 @@ const routes: Routes = [
   },
   {
     path: 'list-form',
-    component: ShoppingListFormPage
-  }
+    component: ShoppingListFormPage,
+    canDeactivate: [UnsavedChangesGuard],
+  },
 ];
 
 @NgModule({
