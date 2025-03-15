@@ -8,6 +8,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { DateMonthInputComponent } from './date-month-input/date-month-input.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { FormComponent } from './form/form/form.component';
+import { FormModalComponent } from './form-modal/form-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,14 +17,21 @@ import { FormComponent } from './form/form/form.component';
     AppHeaderComponent,
     DateMonthInputComponent,
     FormComponent,
+    FormModalComponent,
   ],
-  imports: [CommonModule, IonicModule.forRoot(), RouterModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    IonicModule.forRoot(),
+    RouterModule,
+    ReactiveFormsModule,
+  ],
   exports: [
     MainMenuComponent,
     AppBillIconComponent,
     AppHeaderComponent,
     DateMonthInputComponent,
     FormComponent,
+    FormModalComponent,
   ],
   providers: [DatePipe],
 })
