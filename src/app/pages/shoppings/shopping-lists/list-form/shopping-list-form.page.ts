@@ -7,6 +7,7 @@ import { DataService } from 'src/app/services/data.service';
 import { shoppingListFormMetadata } from './shopping-list-form.metadata';
 import { ShoppingList } from '../shopping-list';
 import { ShoppingListItem } from '../shopping-list-item';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -35,6 +36,7 @@ export class ShoppingListFormPage implements OnInit {
     completed: 0,
     items: [] as ShoppingListItem[],
   } as ShoppingList;
+  originalItems = [] as ShoppingListItem[];
 
   ngOnInit() {
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
@@ -42,6 +44,7 @@ export class ShoppingListFormPage implements OnInit {
     if (navigationState && navigationState['list']) {
       this.shoppingList = navigationState['list'];
       this.shoppingList.completed = this.shoppingList.completed ? 1 : 0;
+      this.originalItems = [...this.shoppingList.items];
       this.isEditing = true;
       titlePrefix = 'Edit';
     }
@@ -63,7 +66,7 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   hasChanges(): boolean {
-    return this.form.hasChanges();
+    return this.form.hasChanges() || !_.isEqual(this.originalItems, this.shoppingList.items);
   }
 
   showUnsavedChangesAlert(): Promise<boolean> {
@@ -74,8 +77,9 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   onAddProduct() {
+    // open modal to select/create item
     this.shoppingList.items.push({
-      item_name: '',
+      item_name: "" + this.shoppingList.items.length + 1,
     } as ShoppingListItem);
   }
 
