@@ -6,6 +6,7 @@ import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { shoppingListFormMetadata } from './shopping-list-form.metadata';
 import { ShoppingList } from '../shopping-list';
+import { ShoppingListItem } from '../shopping-list-item';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -15,7 +16,7 @@ import { ShoppingList } from '../shopping-list';
 })
 export class ShoppingListFormPage implements OnInit {
   @ViewChild(FormComponent) private readonly form!: FormComponent;
-  
+
   constructor(
     private readonly router: Router,
     private readonly location: Location,
@@ -23,10 +24,17 @@ export class ShoppingListFormPage implements OnInit {
     private readonly alertService: AlertService
   ) {}
 
-  metadata = shoppingListFormMetadata
+  metadata = shoppingListFormMetadata;
   title = '';
   isEditing = false;
-  shoppingList = {} as ShoppingList;
+  shoppingList = {
+    list_name: '',
+    effective_date: new Date(),
+    items_quantity: 0,
+    total: 0,
+    completed: 0,
+    items: [] as ShoppingListItem[],
+  } as ShoppingList;
 
   ngOnInit() {
     const navigationState = this.router.getCurrentNavigation()?.extras.state;
@@ -63,6 +71,18 @@ export class ShoppingListFormPage implements OnInit {
       header: 'You have unsaved changes',
       message: 'Do you want to discard changes?',
     });
+  }
+
+  onAddProduct() {
+    this.shoppingList.items.push({
+      item_name: '',
+    } as ShoppingListItem);
+  }
+
+  onRemoveProduct(product: any) {
+    this.shoppingList.items = this.shoppingList.items.filter(
+      (p) => p !== product
+    );
   }
 
   async onFormSubmit(formData: any) {
