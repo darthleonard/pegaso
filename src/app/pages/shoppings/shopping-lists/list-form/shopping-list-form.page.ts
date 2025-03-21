@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import * as _ from 'lodash';
 import { FormComponent } from 'src/app/components/form/form/form.component';
 import { AlertService } from 'src/app/services/alert.service';
 import { DataService } from 'src/app/services/data.service';
 import { shoppingListFormMetadata } from './shopping-list-form.metadata';
 import { ShoppingList } from '../shopping-list';
 import { ShoppingListItem } from '../shopping-list-item';
-import * as _ from 'lodash';
+import { ShoppingItemModalComponent } from './shopping-item-modal.component';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -17,6 +18,7 @@ import * as _ from 'lodash';
 })
 export class ShoppingListFormPage implements OnInit {
   @ViewChild(FormComponent) private readonly form!: FormComponent;
+  @ViewChild(ShoppingItemModalComponent) private readonly itemModal!: ShoppingItemModalComponent;
 
   constructor(
     private readonly router: Router,
@@ -29,6 +31,7 @@ export class ShoppingListFormPage implements OnInit {
   title = '';
   isEditing = false;
   shoppingList = {
+    id: '',
     list_name: '',
     effective_date: new Date(),
     items_quantity: 0,
@@ -77,16 +80,17 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   onAddProduct() {
-    // open modal to select/create item
-    this.shoppingList.items.push({
-      item_name: "" + this.shoppingList.items.length + 1,
-    } as ShoppingListItem);
+    this.itemModal.open(this.shoppingList.id);
   }
 
   onRemoveProduct(product: any) {
     this.shoppingList.items = this.shoppingList.items.filter(
       (p) => p !== product
     );
+  }
+
+  onItemSelected(item: any) {
+    this.shoppingList.items.push(item);
   }
 
   async onFormSubmit(formData: any) {

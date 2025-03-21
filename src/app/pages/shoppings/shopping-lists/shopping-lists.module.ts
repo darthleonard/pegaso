@@ -6,6 +6,7 @@ import { ComponentsModule } from 'src/app/components/components.module';
 import { ShoppingListsPageRoutingModule } from './shopping-lists-routing.module';
 import { ShoppingListsPage } from './lists-list/shopping-lists.page';
 import { ShoppingListFormPage } from './list-form/shopping-list-form.page';
+import { ShoppingItemModalComponent } from './list-form/shopping-item-modal.component';
 
 @NgModule({
   imports: [
@@ -13,8 +14,12 @@ import { ShoppingListFormPage } from './list-form/shopping-list-form.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    ShoppingListsPageRoutingModule
+    ShoppingListsPageRoutingModule,
   ],
-  declarations: [ShoppingListsPage, ShoppingListFormPage]
+  declarations: [
+    ShoppingListsPage,
+    ShoppingListFormPage,
+    ShoppingItemModalComponent,
+  ],
 })
 export class ShoppingListsPageModule {}

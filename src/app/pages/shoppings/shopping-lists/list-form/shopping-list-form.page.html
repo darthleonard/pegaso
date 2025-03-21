@@ -11,6 +11,8 @@
   <ion-list>
     <ion-item>
       <ion-label>Productos</ion-label>
+      <ion-label>Precio</ion-label>
+      <ion-label>Cantidad</ion-label>
       <ion-button
         slot="end"
         fill="clear"
@@ -21,6 +23,8 @@
     </ion-item>
     <ion-item *ngFor="let item of shoppingList.items">
       <ion-label>{{ item.item_name }}</ion-label>
+      <ion-label>{{ item.unit_price | currency }}</ion-label>
+      <ion-label>{{ item.quantity }}</ion-label>
       <ion-button
         slot="end"
         fill="clear"
@@ -30,4 +34,5 @@
       </ion-button>
     </ion-item>
   </ion-list>
+  <app-shopping-item-modal (itemSelected)="onItemSelected($event)"></app-shopping-item-modal>
 </ion-content>
