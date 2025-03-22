@@ -8,7 +8,7 @@ import { AppHeaderComponent } from './app-header/app-header.component';
 import { DateMonthInputComponent } from './date-month-input/date-month-input.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { FormComponent } from './form/form/form.component';
-import { FormModalComponent } from './form-modal/form-modal.component';
+import { FormModalComponent } from './form/form-modal/form-modal.component';
 
 @NgModule({
   declarations: [
