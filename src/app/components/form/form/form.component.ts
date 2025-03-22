@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService } from 'src/app/services/alert.service';
+import { FormMetadata } from '../form-metadata';
 
 @Component({
   selector: 'app-form',
@@ -10,13 +11,7 @@ import { AlertService } from 'src/app/services/alert.service';
 })
 export class FormComponent implements OnInit {
   @Input() model: any = {};
-  @Input() metadata!: {
-    field: string;
-    label: string;
-    type: string;
-    readonly?: boolean;
-    validators?: string[];
-  }[];
+  @Input() metadata!: FormMetadata[];
 
   @Output() formSubmitted = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();

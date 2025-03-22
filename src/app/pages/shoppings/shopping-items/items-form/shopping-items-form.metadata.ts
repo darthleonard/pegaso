@@ -1,13 +1,15 @@
+import { EditorType } from "src/app/components/form/form-metadata";
+
 export const shoppingItemFormMetadata = [
   {
     field: 'item_name',
     label: 'Nombre',
-    type: 'text',
+    type: EditorType.Text,
     validators: ['required'],
   },
   {
     field: 'description',
     label: 'Descripcion',
-    type: 'text',
+    type: EditorType.Text,
   },
 ];

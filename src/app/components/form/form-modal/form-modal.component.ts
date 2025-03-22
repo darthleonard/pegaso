@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { IonModal } from '@ionic/angular';
+import { FormMetadata } from '../form-metadata';
 
 @Component({
   selector: 'app-form-modal',
@@ -11,7 +12,7 @@ export class FormModalComponent {
   @ViewChild(IonModal) modal!: IonModal;
 
   @Input() title!: string;
-  @Input() metadata!: any;
+  @Input() metadata!: FormMetadata[];
 
   @Output() saved = new EventEmitter<any>();
   @Output() deleted = new EventEmitter<any>();

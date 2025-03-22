@@ -1,25 +1,27 @@
+import { EditorType } from "src/app/components/form/form-metadata";
+
 export const fuelFormMetadata = [
   {
     field: 'fill_date',
     label: 'Fecha',
-    type: 'datetime',
+    type: EditorType.Datetime,
     validators: ['required'],
   },
   {
     field: 'total',
     label: 'Total',
-    type: 'number',
+    type: EditorType.Number,
     validators: ['required'],
   },
   {
     field: 'fuel_amount',
     label: 'Cantidad (lt)',
-    type: 'number',
+    type: EditorType.Number,
     validators: ['required'],
   },
   {
     field: 'odometer',
     label: 'Kilometraje',
-    type: 'number',
+    type: EditorType.Number,
   },
 ];

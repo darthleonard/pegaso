@@ -1,33 +1,35 @@
+import { EditorType } from "src/app/components/form/form-metadata";
+
 export const billFormMetadata = [
   {
     field: 'month',
     label: 'Fecha',
-    type: 'date-month',
+    type: EditorType.DateMonth,
     validators: ['required'],
   },
   {
     field: 'house',
     label: 'Renta',
-    type: 'number',
+    type: EditorType.Number,
   },
   {
     field: 'cable',
     label: 'Internet',
-    type: 'number',
+    type: EditorType.Number,
   },
   {
     field: 'water',
     label: 'Agua',
-    type: 'number',
+    type: EditorType.Number,
   },
   {
     field: 'electricity',
     label: 'Luz',
-    type: 'number',
+    type: EditorType.Number,
   },
   {
     field: 'gas',
     label: 'Gas',
-    type: 'number',
+    type: EditorType.Number,
   },
 ];
