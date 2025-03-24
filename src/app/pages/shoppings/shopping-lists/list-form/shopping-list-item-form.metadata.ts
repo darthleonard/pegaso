@@ -4,7 +4,7 @@ export const shoppingListItemFormMetadata = [
   {
     field: 'item_name',
     label: 'Producto',
-    type: EditorType.Text,
+    type: EditorType.SelectModal,
     validators: ['required'],
   },
   {

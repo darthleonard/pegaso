@@ -9,6 +9,7 @@ import { DateMonthInputComponent } from './date-month-input/date-month-input.com
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { FormComponent } from './form/form/form.component';
 import { FormModalComponent } from './form/form-modal/form-modal.component';
+import { SelectModalInputComponent } from './form/editors/select-modal/select-modal-input.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { FormModalComponent } from './form/form-modal/form-modal.component';
     DateMonthInputComponent,
     FormComponent,
     FormModalComponent,
+    SelectModalInputComponent,
   ],
   imports: [
     CommonModule,
@@ -32,6 +34,7 @@ import { FormModalComponent } from './form/form-modal/form-modal.component';
     DateMonthInputComponent,
     FormComponent,
     FormModalComponent,
+    SelectModalInputComponent,
   ],
   providers: [DatePipe],
 })
