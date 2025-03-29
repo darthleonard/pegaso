@@ -1,6 +1,15 @@
-import { Component, EventEmitter, forwardRef, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonSearchbar } from '@ionic/angular';
+import { OfflineDataService } from 'src/app/services/offline-data.service';
 
 @Component({
   selector: 'app-select-modal-input',
@@ -9,18 +18,19 @@ import { IonSearchbar } from '@ionic/angular';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => SelectModalInputComponent),
-      multi: true
-    }
+      multi: true,
+    },
   ],
   standalone: false,
 })
-export class SelectModalInputComponent implements ControlValueAccessor {
+export class SelectModalInputComponent implements OnInit, ControlValueAccessor {
   @ViewChild(IonSearchbar) private readonly searchbar!: IonSearchbar;
 
-  constructor() {}
+  constructor(private readonly offlineDataService: OfflineDataService) {}
 
   @Input() readonly = false;
-  @Input() visibleField = "";
+  @Input() visibleField = '';
+  @Input() tableName = '';
   @Output() itemSelected = new EventEmitter<Record<string, any>>();
 
   isModalOpen = false;
@@ -28,12 +38,15 @@ export class SelectModalInputComponent implements ControlValueAccessor {
   onChange: (value: any) => void = () => {};
   onTouched?: any = () => {};
 
-  items: Record<string, any>[] = [
-    { id: 1, item_name: 'Product A' },
-    { id: 2, item_name: 'Product B' },
-    { id: 3, item_name: 'Product C' }
-  ];
+  items: Record<string, any>[] = [];
   filteredItems = [...this.items];
+
+  ngOnInit(): void {
+    this.offlineDataService.getAllRecords(this.tableName).then((r) => {
+      this.items = r;
+      this.filteredItems = [...this.items];
+    });
+  }
 
   open() {
     this.isModalOpen = true;
@@ -41,7 +54,7 @@ export class SelectModalInputComponent implements ControlValueAccessor {
 
   filterItems(event: any) {
     const query = event.target.value.toLowerCase();
-    this.filteredItems = this.items.filter(item =>
+    this.filteredItems = this.items.filter((item) =>
       item[this.visibleField].toLowerCase().includes(query)
     );
   }

@@ -9,7 +9,8 @@
         <ion-label position="stacked">{{ field.label }}</ion-label>
         <app-select-modal-input
           [formControlName]="field.field"
-          [visibleField]="field.visibleField || field.field"
+          [tableName]="field.selectOptions?.tableName || ''"
+          [visibleField]="field.selectOptions?.visibleField || field.field"
         ></app-select-modal-input>
       </ng-container>
       <ng-container *ngSwitchCase="'date-month'">

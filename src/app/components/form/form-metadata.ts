@@ -5,6 +5,7 @@ export type FormMetadata = {
   visibleField?: string; // for use on SelectModal
   readonly?: boolean;
   validators?: string[];
+  selectOptions?: { visibleField?: string; tableName: string };
 };
 
 export enum EditorType {

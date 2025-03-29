@@ -5,6 +5,10 @@ export const shoppingListItemFormMetadata = [
     field: 'item_name',
     label: 'Producto',
     type: EditorType.SelectModal,
+    selectOptions: {
+      visibleField: 'item_name',
+      tableName: 'shoppingItems'
+    },
     validators: ['required'],
   },
   {
