@@ -31,34 +31,23 @@ class BillController {
 
     public function createBill() {
         $data = json_decode(file_get_contents("php://input"));
-        $this->bill->month = $data->month;
-        $this->bill->house = $data->house;
-        $this->bill->cable = $data->cable;
-        $this->bill->water = $data->water;
-        $this->bill->electricity = $data->electricity;
-        $this->bill->gas = $data->gas;
+        $this->bill = ObjectMapper::fromArray((array) $data, $this->bill);
         
         if ($this->bill->create()) {
-            echo json_encode(["message" => "Bill created successfully."]);
+            echo json_encode($this->bill);
         } else {
-            echo json_encode(["message" => "Failed to create bill."]);
+            echo json_encode(["message" => "Failed to create bill.". $this->bill->errorMessage]);
         }
     }
 
     public function updateBill() {
         $data = json_decode(file_get_contents("php://input"));
-        $this->bill->id = $data->id;
-        $this->bill->month = $data->month;
-        $this->bill->house = $data->house;
-        $this->bill->cable = $data->cable;
-        $this->bill->water = $data->water;
-        $this->bill->electricity = $data->electricity;
-        $this->bill->gas = $data->gas;
+        $this->bill = ObjectMapper::fromArray((array) $data, $this->bill);
 
         if ($this->bill->update()) {
-            echo json_encode(["message" => "Bill updated successfully."]);
+            echo json_encode($this->bill);
         } else {
-            echo json_encode(["message" => "Failed to update bill."]);
+            echo json_encode(["message" => "Failed to update bill.". $this->bill->errorMessage]);
         }
     }
 
@@ -69,7 +58,7 @@ class BillController {
         if ($this->bill->delete()) {
             echo json_encode(["message" => "Bill deleted successfully."]);
         } else {
-            echo json_encode(["message" => "Failed to delete bill."]);
+            echo json_encode(["message" => "Failed to delete bill.". $this->bill->errorMessage]);
         }
     }
 

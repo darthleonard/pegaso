@@ -1,0 +1,11 @@
+<app-header [title]="title" defaultHref="/fuel"></app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <app-form
+    [model]="fuel"
+    [metadata]="metadata"
+    (formSubmitted)="onFormSubmit($event)"
+    (delete)="onDelete()"
+  >
+  </app-form>
+</ion-content>

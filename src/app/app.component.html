@@ -1,3 +1,14 @@
-<ion-app>
-  <ion-router-outlet></ion-router-outlet>
+<ion-app *ngIf="loaded">
+  <app-main-menu></app-main-menu>
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
+
+<ion-loading *ngIf="!loaded" message="Loading, please wait..."></ion-loading>
+<ion-toast
+  [isOpen]="isToastOpen"
+  [message]="toastConfig?.message"
+  [duration]="toastConfig?.duration"
+  [icon]="toastConfig?.icon"
+  [class]="toastConfig?.type"
+  (didDismiss)="openModal(false)"
+></ion-toast>

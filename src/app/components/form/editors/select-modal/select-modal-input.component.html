@@ -1,0 +1,27 @@
+<ion-input type="text" [value]="selectedItem" (click)="open()" readonly></ion-input>
+<ion-modal [isOpen]="isModalOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+        </ion-buttons>
+        <ion-title>Modal</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="confirm()">Confirm</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-searchbar (ionInput)="filterItems($event)"></ion-searchbar>
+      <ion-list>
+        <ion-item
+          *ngFor="let item of filteredItems as any"
+          (click)="selectItem(item)"
+        >
+        {{ item[visibleField] }}
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

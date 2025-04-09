@@ -1,0 +1,23 @@
+ion-toast.toast-normal {
+  --background: rgba(92, 119, 201, 0.9);
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #fff;
+}
+
+ion-toast.toast-success {
+  --background: rgba(59, 138, 67, 0.9);
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #fff;
+}
+
+ion-toast.toast-alert {
+  --background: rgba(255, 156, 25, 0.9);
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #fff;
+}
+
+ion-toast.toast-error {
+  --background: rgba(255, 36, 36, 0.9);
+  --box-shadow: 3px 3px 10px 0 rgba(0, 0, 0, 0.2);
+  --color: #fff;
+}

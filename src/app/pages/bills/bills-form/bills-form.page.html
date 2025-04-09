@@ -1,0 +1,11 @@
+<app-header [title]="title" defaultHref="/bills"></app-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <app-form
+    [model]="bill"
+    [metadata]="metadata"
+    (formSubmitted)="onFormSubmit($event)"
+    (delete)="onDelete()"
+  >
+  </app-form>
+</ion-content>

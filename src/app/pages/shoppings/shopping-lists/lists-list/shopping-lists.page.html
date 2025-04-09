@@ -1,0 +1,25 @@
+<app-header title="Lists"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="!shoppingLists">loading...</div>
+  <div *ngIf="shoppingLists && !shoppingLists.length">no records found</div>
+
+  <ion-list>
+    <ion-item *ngFor="let item of shoppingLists" (click)="onClick(item)">
+      <ion-label>
+        <h2>{{ item.list_name }}</h2>
+        <p>{{ item.effective_date | date: 'medium' }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="onClick()">
+      <ion-icon name="add" />
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

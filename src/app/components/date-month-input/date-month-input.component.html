@@ -1,0 +1,16 @@
+<ion-input
+  id="click-trigger"
+  [value]="dateInput"
+  type="text"
+  readonly
+></ion-input>
+<ion-popover *ngIf="!readonly" trigger="click-trigger" triggerAction="click">
+  <ng-template>
+    <ion-datetime
+      presentation="month-year"
+      [value]="dateInput"
+      [showDefaultButtons]="true"
+      (ionChange)="update($event)"
+    ></ion-datetime>
+  </ng-template>
+</ion-popover>

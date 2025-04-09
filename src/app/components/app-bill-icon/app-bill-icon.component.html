@@ -1,0 +1,15 @@
+<ion-icon
+  [id]="group + name"
+  [name]="name"
+  [color]="value ? 'success' : 'medium'"
+></ion-icon>
+<ion-popover
+  *ngIf="value"
+  [trigger]="group + name"
+  [cssClass]="'tooltip'"
+  alignment="start"
+>
+  <ng-template>
+    <ion-content class="ion-padding"> {{ value | currency }}</ion-content>
+  </ng-template>
+</ion-popover>
