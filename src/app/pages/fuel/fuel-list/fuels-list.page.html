@@ -22,7 +22,7 @@
             <ion-label>{{ !!fuel.fuel_amount ? fuel.fuel_amount : 0 }} lt</ion-label>
           </ion-col>
           <ion-col size="4" (click)="onClick(fuel)">
-            <ion-label>{{ !fuel.odometer ? fuel.odometer : 0 }} km</ion-label>
+            <ion-label>{{ !fuel.odometer ? 0 : fuel.odometer }} km</ion-label>
           </ion-col>
         </ion-row>
       </ion-grid>
