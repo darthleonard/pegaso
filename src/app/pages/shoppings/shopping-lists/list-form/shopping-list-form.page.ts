@@ -18,7 +18,8 @@ import { ShoppingItemModalComponent } from './shopping-item-modal.component';
 })
 export class ShoppingListFormPage implements OnInit {
   @ViewChild(FormComponent) private readonly form!: FormComponent;
-  @ViewChild(ShoppingItemModalComponent) private readonly itemModal!: ShoppingItemModalComponent;
+  @ViewChild(ShoppingItemModalComponent)
+  private readonly itemModal!: ShoppingItemModalComponent;
 
   constructor(
     private readonly router: Router,
@@ -48,6 +49,7 @@ export class ShoppingListFormPage implements OnInit {
       this.shoppingList = navigationState['list'];
       this.shoppingList.completed = this.shoppingList.completed ? 1 : 0;
       this.originalItems = [...this.shoppingList.items];
+      this.updateFooterData();
       this.isEditing = true;
       titlePrefix = 'Edit';
     }
@@ -69,7 +71,10 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   hasChanges(): boolean {
-    return this.form.hasChanges() || !_.isEqual(this.originalItems, this.shoppingList.items);
+    return (
+      this.form.hasChanges() ||
+      !_.isEqual(this.originalItems, this.shoppingList.items)
+    );
   }
 
   showUnsavedChangesAlert(): Promise<boolean> {
@@ -91,6 +96,7 @@ export class ShoppingListFormPage implements OnInit {
 
   onItemSelected(item: any) {
     this.shoppingList.items.push(item);
+    this.updateFooterData();
   }
 
   async onFormSubmit(formData: any) {
@@ -115,5 +121,13 @@ export class ShoppingListFormPage implements OnInit {
     } catch (error: any) {
       this.form.error = `Error deleting shoppingList ${error.error.message}`;
     }
+  }
+
+  private updateFooterData() {
+    this.shoppingList.items_quantity = this.shoppingList.items.length;
+    this.shoppingList.total = this.shoppingList.items.reduce(
+      (acc, item) => acc + item.unit_price * item.quantity,
+      0
+    );
   }
 }

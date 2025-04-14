@@ -12,22 +12,10 @@ export const shoppingListFormMetadata = [
     label: 'Fecha',
     type: EditorType.Datetime,
   },
-  {
-    field: 'items_quantity',
-    label: 'Cantidad de Productos',
-    type: EditorType.Number,
-    readonly: true,
-  },
-  {
-    field: 'total',
-    label: 'Total',
-    type: EditorType.Number,
-    readonly: true,
-  },
-  {
-    field: 'completed',
-    label: 'Completada',
-    type: EditorType.Checkbox,
-    readonly: true,
-  }
+  // {
+  //   field: 'completed',
+  //   label: 'Completada',
+  //   type: EditorType.Checkbox,
+  //   readonly: true,
+  // }
 ];

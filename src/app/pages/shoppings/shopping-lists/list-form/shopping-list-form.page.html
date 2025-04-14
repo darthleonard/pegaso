@@ -1,4 +1,7 @@
-<app-header [title]="title" defaultHref="/shoppings/shopping-lists"></app-header>
+<app-header
+  [title]="title"
+  defaultHref="/shoppings/shopping-lists"
+></app-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <app-form
@@ -13,11 +16,7 @@
       <ion-label>Productos</ion-label>
       <ion-label>Precio</ion-label>
       <ion-label>Cantidad</ion-label>
-      <ion-button
-        slot="end"
-        fill="clear"
-        (click)="onAddProduct()"
-      >
+      <ion-button slot="end" fill="clear" (click)="onAddProduct()">
         <ion-icon slot="icon-only" name="add"></ion-icon>
       </ion-button>
     </ion-item>
@@ -25,14 +24,27 @@
       <ion-label>{{ item.item_name }}</ion-label>
       <ion-label>{{ item.unit_price | currency }}</ion-label>
       <ion-label>{{ item.quantity }}</ion-label>
-      <ion-button
-        slot="end"
-        fill="clear"
-        (click)="onRemoveProduct(item)"
-      >
+      <ion-button slot="end" fill="clear" (click)="onRemoveProduct(item)">
         <ion-icon slot="icon-only" name="trash"></ion-icon>
       </ion-button>
     </ion-item>
   </ion-list>
-  <app-shopping-item-modal (itemSelected)="onItemSelected($event)"></app-shopping-item-modal>
+  <app-shopping-item-modal
+    (itemSelected)="onItemSelected($event)"
+  ></app-shopping-item-modal>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6" class="ion-text-right">
+          <small>Cantidad de Productos: {{ shoppingList.items_quantity }} </small>
+        </ion-col>
+        <ion-col size="6" class="ion-text-right">
+          <small> Total: {{ shoppingList.total | currency }} </small>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
