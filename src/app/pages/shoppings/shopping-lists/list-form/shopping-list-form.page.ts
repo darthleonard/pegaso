@@ -101,7 +101,10 @@ export class ShoppingListFormPage implements OnInit {
 
   async onFormSubmit(formData: any) {
     try {
-      // const shoppingListData = formData;
+      const shoppingListData = formData;
+      if(shoppingListData.list_name === '') {
+        shoppingListData.list_name = 'Nueva Lista';
+      }
       // await this.dataService.saveRecord(shoppingListData);
       this.form.form.reset();
       this.location.back();
