@@ -31,17 +31,13 @@ export class ShoppingItemModalComponent {
     this.isModalOpen = false;
   }
 
-  onFormSubmit(model: any) {
-    const item = {
-      id: '',
-      list_id: this.listId,
-      quantity: model.quantity ?? 0,
-      unit_price: model.unit_price ?? '',
-      notes: model.notes,
-      item_id: '',
-      item_name: model.item_name,
-    } as ShoppingListItem;
-    this.itemSelected.emit(item);
+  onFormSubmit(model: ShoppingListItem) {
+    if(_.isEqual(this.shoppingListItem, model)) {
+      console.log('No changes made to the item.');
+      this.isModalOpen = false;
+    }
+    this.itemSelected.emit(model);
     this.isModalOpen = false;
+    this.shoppingListItem = {} as ShoppingListItem;
   }
 }
