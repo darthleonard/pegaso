@@ -34,6 +34,7 @@ export class ShoppingItemModalComponent {
 
   cancel() {
     this.isModalOpen = false;
+    this.resetValues();
   }
 
   onFormSubmit(model: ShoppingListItem) {
@@ -43,7 +44,12 @@ export class ShoppingItemModalComponent {
       return;
     }
     this.itemSelected.emit({ model, new: this.isNew });
-    this.isModalOpen = false;
+    this.resetValues();
     this.shoppingListItem = {} as ShoppingListItem;
+  }
+
+  private resetValues() {
+    this.isModalOpen = false;
+    this.isNew = true;
   }
 }
