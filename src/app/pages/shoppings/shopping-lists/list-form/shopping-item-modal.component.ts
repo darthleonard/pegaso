@@ -12,8 +12,12 @@ import { shoppingListItemFormMetadata } from './shopping-list-item-form.metadata
 })
 export class ShoppingItemModalComponent {
   private listId = '';
+  private isNew = true;
 
-  @Output() itemSelected = new EventEmitter<any>();
+  @Output() itemSelected = new EventEmitter<{
+    model: ShoppingListItem;
+    new: boolean;
+  }>();
 
   isModalOpen = false;
   metadata = shoppingListItemFormMetadata;
@@ -21,7 +25,8 @@ export class ShoppingItemModalComponent {
 
   open(listId: string, shoppingListItem?: ShoppingListItem) {
     this.listId = listId;
-    if(shoppingListItem) {
+    if (shoppingListItem) {
+      this.isNew = false;
       this.shoppingListItem = shoppingListItem;
     }
     this.isModalOpen = true;
@@ -32,11 +37,12 @@ export class ShoppingItemModalComponent {
   }
 
   onFormSubmit(model: ShoppingListItem) {
-    if(_.isEqual(this.shoppingListItem, model)) {
+    if (_.isEqual(this.shoppingListItem, model)) {
       console.log('No changes made to the item.');
       this.isModalOpen = false;
+      return;
     }
-    this.itemSelected.emit(model);
+    this.itemSelected.emit({ model, new: this.isNew });
     this.isModalOpen = false;
     this.shoppingListItem = {} as ShoppingListItem;
   }

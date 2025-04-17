@@ -98,16 +98,22 @@ export class ShoppingListFormPage implements OnInit {
     this.shoppingList.items = this.shoppingList.items.filter((i) => i !== item);
   }
 
-  onItemSelected(item: ShoppingListItem) {
-    let existingItem = this.shoppingList.items.findIndex(
-      (i) => i.id === item.id
+  onItemSelected(args: { model: ShoppingListItem; new: boolean }) {
+    const index = this.shoppingList.items.findIndex(
+      (i) => i.item_name === args.model.item_name
     );
 
-    if (existingItem !== -1) {
-      this.shoppingList.items[existingItem] = item;
-    } else {
-      this.shoppingList.items.push(item);
+    if (args.new && index !== -1) {
+      this.toastService.showError({message: 'Item already exists in the list'});
+      return;
     }
+
+    if (args.new) {
+      this.shoppingList.items.push(args.model);
+    } else {
+      this.shoppingList.items[index] = args.model;
+    }
+
     this.updateFooterData();
   }
 
