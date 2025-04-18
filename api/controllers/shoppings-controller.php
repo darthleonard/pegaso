@@ -39,9 +39,9 @@ class ShoppingsController {
          $listId = $data['id'];
          $stmt = $this->conn->prepare(
             "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
-            VALUES (?, ?, ?, ?, ?) 
+            VALUES (?, LOWER(?), ?, ?, ?) 
             ON DUPLICATE KEY UPDATE 
-               list_name = VALUES(list_name),
+               list_name = LOWER(VALUES(list_name)),
                effective_date = VALUES(effective_date),
                items_quantity = VALUES(items_quantity),
                completed = VALUES(completed)");
@@ -58,13 +58,20 @@ class ShoppingsController {
                $itemId = $item['id'];
                $stmt = $this->conn->prepare(
                   "INSERT INTO shoppingItems (id, item_name, description) 
-                  VALUES (?, ?, ?)");
+                  VALUES (?, LOWER(?), LOWER(?))");
                $stmt->execute([$itemId, $item['item_name'], $item['description'] ?? null]);
             }
 
             $stmt = $this->conn->prepare(
                "INSERT INTO shoppingListItems (id, list_id, item_id, quantity, unit_price, notes) 
-               VALUES (?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE id = VALUES(id)");
+               VALUES (?, ?, ?, ?, ?, ?) 
+               ON DUPLICATE KEY UPDATE 
+                  id = VALUES(id),
+                  list_id = VALUES(list_id),
+                  item_id = VALUES(item_id),
+                  quantity = VALUES(quantity),
+                  unit_price = VALUES(unit_price),
+                  notes = VALUES(notes);");
             $stmt->execute([$item['id'], $listId, $itemId, $item['quantity'], $item['unit_price'] ?? null, $item['notes'] ?? null]);
          }
 
