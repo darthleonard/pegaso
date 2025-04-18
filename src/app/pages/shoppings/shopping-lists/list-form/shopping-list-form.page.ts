@@ -99,6 +99,7 @@ export class ShoppingListFormPage implements OnInit {
 
   onRemoveProduct(item: ShoppingListItem) {
     this.shoppingList.items = this.shoppingList.items.filter((i) => i !== item);
+    this.updateFooterData();
   }
 
   onItemSelected(args: { model: ShoppingListItem; new: boolean }) {
