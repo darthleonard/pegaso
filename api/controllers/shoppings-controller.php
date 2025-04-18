@@ -36,50 +36,51 @@ class ShoppingsController {
       $data = json_decode($inputData, true);
 
       if (isset($data['list_name']) && isset($data['items']) && is_array($data['items'])) {
-         $listId = $data['id'];
-         $stmt = $this->conn->prepare(
-            "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
-            VALUES (?, LOWER(?), ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE 
-               list_name = LOWER(VALUES(list_name)),
-               effective_date = VALUES(effective_date),
-               items_quantity = VALUES(items_quantity),
-               completed = VALUES(completed)");
-         $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], (int)$data['completed']]);
+          $listId = $data['id'];
+          $stmt = $this->conn->prepare(
+              "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
+              VALUES (?, LOWER(?), ?, ?, ?) 
+              ON DUPLICATE KEY UPDATE 
+                 list_name = LOWER(VALUES(list_name)),
+                 effective_date = VALUES(effective_date),
+                 items_quantity = VALUES(items_quantity),
+                 completed = VALUES(completed)");
+          $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], (int)$data['completed']]);
 
-         foreach ($data['items'] as $item) {
-            $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE id = ?");
-            $stmt->execute([$item['id']]);
-            $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
+          foreach ($data['items'] as $item) {
+              $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE item_name = LOWER(?)");
+              $stmt->execute([strtolower($item['item_name'])]);
+              $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
+  
+              if ($existingItem) {
+                  $itemId = $existingItem['id'];
+              } else {
+                  $stmt = $this->conn->prepare(
+                      "INSERT INTO shoppingItems (id, item_name, description) 
+                      VALUES (UUID(), LOWER(?), LOWER(?))"
+                  );
+                  $stmt->execute([strtolower($item['item_name']), strtolower($item['description'] ?? '')]);
+                  $itemId = $this->conn->lastInsertId();
+              }
 
-            if ($existingItem) {
-               $itemId = $existingItem['id'];
-            } else {
-               $itemId = $item['id'];
-               $stmt = $this->conn->prepare(
-                  "INSERT INTO shoppingItems (id, item_name, description) 
-                  VALUES (?, LOWER(?), LOWER(?))");
-               $stmt->execute([$itemId, $item['item_name'], $item['description'] ?? null]);
-            }
-
-            $stmt = $this->conn->prepare(
-               "INSERT INTO shoppingListItems (id, list_id, item_id, quantity, unit_price, notes) 
-               VALUES (?, ?, ?, ?, ?, ?) 
-               ON DUPLICATE KEY UPDATE 
-                  id = VALUES(id),
-                  list_id = VALUES(list_id),
-                  item_id = VALUES(item_id),
-                  quantity = VALUES(quantity),
-                  unit_price = VALUES(unit_price),
-                  notes = VALUES(notes);");
-            $stmt->execute([$item['id'], $listId, $itemId, $item['quantity'], $item['unit_price'] ?? null, $item['notes'] ?? null]);
-         }
-
-         echo json_encode(['status' => 'success', 'message' => 'Shopping list created successfully', 'list_id' => $listId]);
+              $stmt = $this->conn->prepare(
+                  "INSERT INTO shoppingListItems (id, list_id, item_id, quantity, unit_price, notes) 
+                  VALUES (?, ?, ?, ?, ?, ?) 
+                  ON DUPLICATE KEY UPDATE 
+                     id = VALUES(id),
+                     list_id = VALUES(list_id),
+                     item_id = VALUES(item_id),
+                     quantity = VALUES(quantity),
+                     unit_price = VALUES(unit_price),
+                     notes = VALUES(notes)");
+              $stmt->execute([$item['id'], $listId, $itemId, $item['quantity'], $item['unit_price'] ?? null, $item['notes'] ?? null]);
+          }
+  
+          echo json_encode(['status' => 'success', 'message' => 'Shopping list created successfully', 'list_id' => $listId]);
       } else {
-         echo json_encode(['status' => 'error', 'message' => 'Invalid data received']);
+          echo json_encode(['status' => 'error', 'message' => 'Invalid data received']);
       }
-   }
+  }
 }
 
 ?>
