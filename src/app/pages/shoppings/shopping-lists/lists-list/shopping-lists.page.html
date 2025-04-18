@@ -12,13 +12,13 @@
     <ion-item *ngFor="let item of shoppingLists" (click)="onClick(item)">
       <ion-grid fixed>
         <ion-row class="ion-align-items-center">
-          <ion-col size="9">
+          <ion-col size="7">
             <ion-label>
               <h2>{{ item.list_name | pascalCase:true }}</h2>
               <p>{{ item.effective_date | date: 'medium' }}</p>
             </ion-label>
           </ion-col>
-          <ion-col size="3" class="ion-text-right">
+          <ion-col size="5" class="ion-text-right">
             <h3>{{ item.total | currency }}</h3>
           </ion-col>
         </ion-row>
