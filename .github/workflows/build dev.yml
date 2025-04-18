@@ -38,4 +38,4 @@ jobs:
 
       - name: Generate bundle
         working-directory: ./android/
-        run: ./gradlew bundleRelease
+        run: bash ./gradlew bundleRelease
