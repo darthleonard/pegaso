@@ -1,0 +1,40 @@
+name: Build Dev Pegaso Android Bundle
+
+on: 
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: Build Pegaso
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+
+      - name: Install Ionic
+        run: npm install -g @ionic/cli
+
+      - name: Install app dependencies
+        run: npm install
+
+      - name: Build Ionic project
+        run: ionic build
+
+      - name: Sync Android project
+        run: ionic capacitor sync android
+
+      - name: Generate bundle
+        working-directory: ./android/
+        run: ./gradlew bundleRelease
