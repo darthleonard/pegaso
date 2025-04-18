@@ -6,6 +6,7 @@ import { ShoppingItemsPageRoutingModule } from './shopping-items-routing.module'
 import { ShoppingItemsPage } from './items-list/shopping-items.page';
 import { ComponentsModule } from 'src/app/components/components.module';
 import { ShoppingItemFormPage } from './items-form/shopping-item-form.page';
+import { PascalCasePipe } from 'src/app/pipes/pascal-case.pipe';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { ShoppingItemFormPage } from './items-form/shopping-item-form.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    ShoppingItemsPageRoutingModule
+    ShoppingItemsPageRoutingModule,
+    PascalCasePipe
   ],
   declarations: [ShoppingItemsPage, ShoppingItemFormPage]
 })

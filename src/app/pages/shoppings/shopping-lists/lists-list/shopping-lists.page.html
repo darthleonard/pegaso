@@ -14,7 +14,7 @@
         <ion-row class="ion-align-items-center">
           <ion-col size="9">
             <ion-label>
-              <h2>{{ item.list_name }}</h2>
+              <h2>{{ item.list_name | pascalCase:true }}</h2>
               <p>{{ item.effective_date | date: 'medium' }}</p>
             </ion-label>
           </ion-col>
