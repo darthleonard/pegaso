@@ -40,7 +40,11 @@ class ShoppingsController {
          $stmt = $this->conn->prepare(
             "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
             VALUES (?, ?, ?, ?, ?) 
-            ON DUPLICATE KEY UPDATE list_name = VALUES(list_name)");
+            ON DUPLICATE KEY UPDATE 
+               list_name = VALUES(list_name),
+               effective_date = VALUES(effective_date),
+               items_quantity = VALUES(items_quantity),
+               completed = VALUES(completed)");
          $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], (int)$data['completed']]);
 
          foreach ($data['items'] as $item) {
