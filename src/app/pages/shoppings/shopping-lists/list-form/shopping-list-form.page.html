@@ -23,7 +23,7 @@
         *ngFor="let item of shoppingList.items"
         (click)="onEditProduct(item)"
       >
-        <ion-label>{{ item.item_name }}</ion-label>
+        <ion-label>{{ item.item_name | pascalCase:true }}</ion-label>
         <ion-label>{{ item.unit_price | currency }}</ion-label>
         <ion-label>{{ item.quantity }}</ion-label>
         <ion-button slot="end" fill="clear" (click)="onRemoveProduct(item)">
