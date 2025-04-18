@@ -38,14 +38,15 @@ class ShoppingsController {
       if (isset($data['list_name']) && isset($data['items']) && is_array($data['items'])) {
           $listId = $data['id'];
           $stmt = $this->conn->prepare(
-              "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, completed) 
-              VALUES (?, LOWER(?), ?, ?, ?) 
+              "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, total, completed) 
+              VALUES (?, LOWER(?), ?, ?, ?, ?) 
               ON DUPLICATE KEY UPDATE 
                  list_name = LOWER(VALUES(list_name)),
                  effective_date = VALUES(effective_date),
                  items_quantity = VALUES(items_quantity),
+                 total = VALUES(total),
                  completed = VALUES(completed)");
-          $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], (int)$data['completed']]);
+          $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], $data['total'], (int)$data['completed']]);
 
           foreach ($data['items'] as $item) {
               $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE item_name = LOWER(?)");
