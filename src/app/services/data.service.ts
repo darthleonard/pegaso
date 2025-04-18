@@ -5,6 +5,7 @@ import { OfflineDataService } from './offline-data.service';
 import { OnlineDataService } from './online.service';
 import { ConnectivityService } from './connectivity.service';
 import { ToastService } from './toast.service';
+import { DataUtils } from '../utils/data-utils';
 
 @Injectable()
 export class DataService<T extends IBaseRecord> {
@@ -30,7 +31,7 @@ export class DataService<T extends IBaseRecord> {
   }
 
   async addRecord(record: T) {
-    record.id = this.generateUUID();
+    record.id = DataUtils.generateUUID();
     if (this.connectivityService.isOnline()) {
       await this.onlineDataService.createAsync(this.endpoint, record);
     } else {
@@ -134,16 +135,5 @@ export class DataService<T extends IBaseRecord> {
         await this.onlineDataService.deleteAsync(this.endpoint, record.id);
       }
     }
-  }
-
-  private generateUUID(): string {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        const r = (Math.random() * 16) | 0;
-        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-      }
-    );
   }
 }
