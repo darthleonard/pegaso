@@ -36,6 +36,9 @@ jobs:
       - name: Sync Android project
         run: ionic capacitor sync android
 
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+
       - name: Generate bundle
         working-directory: ./android/
-        run: bash ./gradlew bundleRelease
+        run: ./gradlew bundleRelease
