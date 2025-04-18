@@ -10,6 +10,7 @@ import { ShoppingList } from '../shopping-list';
 import { ShoppingListItem } from '../shopping-list-item';
 import { ShoppingItemModalComponent } from './shopping-item-modal.component';
 import { ToastService } from 'src/app/services/toast.service';
+import { DataUtils } from 'src/app/utils/data-utils';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -28,7 +29,9 @@ export class ShoppingListFormPage implements OnInit {
     private readonly dataService: DataService<any>,
     private readonly alertService: AlertService,
     private readonly toastService: ToastService
-  ) {}
+  ) {
+    this.dataService.init('shoppingLists');
+  }
 
   metadata = shoppingListFormMetadata;
   title = '';
@@ -109,6 +112,7 @@ export class ShoppingListFormPage implements OnInit {
     }
 
     if (args.new) {
+      args.model.id = DataUtils.generateUUID();
       this.shoppingList.items.push(args.model);
     } else {
       this.shoppingList.items[index] = args.model;
@@ -123,7 +127,8 @@ export class ShoppingListFormPage implements OnInit {
       if (shoppingListData.list_name === '') {
         shoppingListData.list_name = 'Nueva Lista';
       }
-      // await this.dataService.saveRecord(shoppingListData);
+      await this.dataService.saveRecord(shoppingListData);
+      this.originalItems = [...shoppingListData.items];
       this.form.form.reset();
       this.location.back();
     } catch (error: any) {
@@ -132,11 +137,12 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   async onDelete() {
-    // if (!this.shoppingList?.id) {
-    //   return;
-    // }
+    if (!this.shoppingList?.id) {
+      return;
+    }
+
     try {
-      //await this.dataService.deleteRecord(this.shoppingList);
+      await this.dataService.deleteRecord(this.shoppingList);
       this.form.form.reset();
       this.location.back();
     } catch (error: any) {
