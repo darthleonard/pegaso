@@ -1,9 +1,9 @@
-name: Build Pegaso Android Bundle
+name: Release Pegaso Android Bundle
 
 on: 
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
