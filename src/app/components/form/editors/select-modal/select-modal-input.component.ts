@@ -62,7 +62,7 @@ export class SelectModalInputComponent implements OnInit, ControlValueAccessor {
   selectItem(item: any) {
     this.selectedItem = item[this.visibleField];
     this.onChange(item[this.visibleField]);
-    this.itemSelected.emit(this.selectedItem);
+    this.itemSelected.emit(item);
     this.isModalOpen = false;
   }
 

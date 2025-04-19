@@ -12,8 +12,12 @@ import { shoppingListItemFormMetadata } from './shopping-list-item-form.metadata
 })
 export class ShoppingItemModalComponent {
   private listId = '';
+  private isNew = true;
 
-  @Output() itemSelected = new EventEmitter<any>();
+  @Output() itemSelected = new EventEmitter<{
+    model: ShoppingListItem;
+    new: boolean;
+  }>();
 
   isModalOpen = false;
   metadata = shoppingListItemFormMetadata;
@@ -21,7 +25,8 @@ export class ShoppingItemModalComponent {
 
   open(listId: string, shoppingListItem?: ShoppingListItem) {
     this.listId = listId;
-    if(shoppingListItem) {
+    if (shoppingListItem) {
+      this.isNew = false;
       this.shoppingListItem = shoppingListItem;
     }
     this.isModalOpen = true;
@@ -29,19 +34,22 @@ export class ShoppingItemModalComponent {
 
   cancel() {
     this.isModalOpen = false;
+    this.resetValues();
   }
 
-  onFormSubmit(model: any) {
-    const item = {
-      id: '',
-      list_id: this.listId,
-      quantity: model.quantity ?? 0,
-      unit_price: model.unit_price ?? '',
-      notes: model.notes,
-      item_id: '',
-      item_name: model.item_name,
-    } as ShoppingListItem;
-    this.itemSelected.emit(item);
+  onFormSubmit(model: ShoppingListItem) {
+    if (_.isEqual(this.shoppingListItem, model)) {
+      console.log('No changes made to the item.');
+      this.isModalOpen = false;
+      return;
+    }
+    this.itemSelected.emit({ model, new: this.isNew });
+    this.resetValues();
+    this.shoppingListItem = {} as ShoppingListItem;
+  }
+
+  private resetValues() {
     this.isModalOpen = false;
+    this.isNew = true;
   }
 }

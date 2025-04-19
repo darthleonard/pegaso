@@ -5,12 +5,15 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class PascalCasePipe implements PipeTransform {
-  transform(value: string): string {
+  transform(value: string, preserveSpaces: boolean = false): string {
     if (!value) return value;
 
-    return value
-      .split(' ')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join('');
+    const words = value.split(' ');
+
+    const pascalWords = words.map(word =>
+      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    );
+
+    return preserveSpaces ? pascalWords.join(' ') : pascalWords.join('');
   }
 }

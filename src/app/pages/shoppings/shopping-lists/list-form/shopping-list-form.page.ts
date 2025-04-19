@@ -9,6 +9,8 @@ import { shoppingListFormMetadata } from './shopping-list-form.metadata';
 import { ShoppingList } from '../shopping-list';
 import { ShoppingListItem } from '../shopping-list-item';
 import { ShoppingItemModalComponent } from './shopping-item-modal.component';
+import { ToastService } from 'src/app/services/toast.service';
+import { DataUtils } from 'src/app/utils/data-utils';
 
 @Component({
   selector: 'app-shopping-list-form',
@@ -18,14 +20,18 @@ import { ShoppingItemModalComponent } from './shopping-item-modal.component';
 })
 export class ShoppingListFormPage implements OnInit {
   @ViewChild(FormComponent) private readonly form!: FormComponent;
-  @ViewChild(ShoppingItemModalComponent) private readonly itemModal!: ShoppingItemModalComponent;
+  @ViewChild(ShoppingItemModalComponent)
+  private readonly itemModal!: ShoppingItemModalComponent;
 
   constructor(
     private readonly router: Router,
     private readonly location: Location,
     private readonly dataService: DataService<any>,
-    private readonly alertService: AlertService
-  ) {}
+    private readonly alertService: AlertService,
+    private readonly toastService: ToastService
+  ) {
+    this.dataService.init('shoppingLists');
+  }
 
   metadata = shoppingListFormMetadata;
   title = '';
@@ -48,6 +54,7 @@ export class ShoppingListFormPage implements OnInit {
       this.shoppingList = navigationState['list'];
       this.shoppingList.completed = this.shoppingList.completed ? 1 : 0;
       this.originalItems = [...this.shoppingList.items];
+      this.updateFooterData();
       this.isEditing = true;
       titlePrefix = 'Edit';
     }
@@ -69,7 +76,10 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   hasChanges(): boolean {
-    return this.form.hasChanges() || !_.isEqual(this.originalItems, this.shoppingList.items);
+    return (
+      this.form.hasChanges() ||
+      !_.isEqual(this.originalItems, this.shoppingList.items)
+    );
   }
 
   showUnsavedChangesAlert(): Promise<boolean> {
@@ -83,20 +93,43 @@ export class ShoppingListFormPage implements OnInit {
     this.itemModal.open(this.shoppingList.id);
   }
 
-  onRemoveProduct(product: any) {
-    this.shoppingList.items = this.shoppingList.items.filter(
-      (p) => p !== product
-    );
+  onEditProduct(item: ShoppingListItem) {
+    this.itemModal.open(this.shoppingList.id, item);
   }
 
-  onItemSelected(item: any) {
-    this.shoppingList.items.push(item);
+  onRemoveProduct(item: ShoppingListItem) {
+    this.shoppingList.items = this.shoppingList.items.filter((i) => i !== item);
+    this.updateFooterData();
+  }
+
+  onItemSelected(args: { model: ShoppingListItem; new: boolean }) {
+    const index = this.shoppingList.items.findIndex(
+      (i) => i.item_name === args.model.item_name
+    );
+
+    if (args.new && index !== -1) {
+      this.toastService.showError({message: 'Item already exists in the list'});
+      return;
+    }
+
+    if (args.new) {
+      args.model.id = DataUtils.generateUUID();
+      this.shoppingList.items.push(args.model);
+    } else {
+      this.shoppingList.items[index] = args.model;
+    }
+
+    this.updateFooterData();
   }
 
   async onFormSubmit(formData: any) {
     try {
-      // const shoppingListData = formData;
-      // await this.dataService.saveRecord(shoppingListData);
+      const shoppingListData = formData;
+      if (shoppingListData.list_name === '') {
+        shoppingListData.list_name = 'Nueva Lista';
+      }
+      await this.dataService.saveRecord(shoppingListData);
+      this.originalItems = [...shoppingListData.items];
       this.form.form.reset();
       this.location.back();
     } catch (error: any) {
@@ -105,15 +138,24 @@ export class ShoppingListFormPage implements OnInit {
   }
 
   async onDelete() {
-    // if (!this.shoppingList?.id) {
-    //   return;
-    // }
+    if (!this.shoppingList?.id) {
+      return;
+    }
+
     try {
-      //await this.dataService.deleteRecord(this.shoppingList);
+      await this.dataService.deleteRecord(this.shoppingList);
       this.form.form.reset();
       this.location.back();
     } catch (error: any) {
       this.form.error = `Error deleting shoppingList ${error.error.message}`;
     }
+  }
+
+  private updateFooterData() {
+    this.shoppingList.items_quantity = this.shoppingList.items.length;
+    this.shoppingList.total = this.shoppingList.items.reduce(
+      (acc, item) => acc + item.unit_price * item.quantity,
+      0
+    );
   }
 }

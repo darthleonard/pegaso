@@ -20,8 +20,8 @@ class ShoppingItem {
         $stmt = $this->conn->prepare($query);
 
         $stmt->bindParam(":id", $this->id);
-        $stmt->bindParam(":item_name", $this->item_name);
-        $stmt->bindParam(":description", $this->description);
+        $stmt->bindParam(":item_name", strtolower($this->item_name));
+        $stmt->bindParam(":description", strtolower($this->description));
 
         if ($stmt->execute()) {
             return true;
@@ -70,8 +70,8 @@ class ShoppingItem {
 
         $stmt = $this->conn->prepare($query);
 
-        $stmt->bindParam(":item_name", $this->item_name);
-        $stmt->bindParam(":description", $this->description);
+        $stmt->bindParam(":item_name", strtolower($this->item_name));
+        $stmt->bindParam(":description", strtolower($this->description));
         $stmt->bindParam(":id", $this->id);
 
         if ($stmt->execute()) {
