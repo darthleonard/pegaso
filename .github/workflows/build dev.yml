@@ -20,6 +20,9 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
+      - name: Check Java version
+        run: java -version
+
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
@@ -39,7 +42,7 @@ jobs:
 
       - name: Clean Gradle cache
         run: ./gradlew clean
-        working-directory: ./android/      
+        working-directory: ./android/       
 
       - name: Generate bundle
         working-directory: ./android/
