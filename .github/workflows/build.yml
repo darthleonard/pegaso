@@ -16,12 +16,15 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
-          java-version: 17
+          java-version: 21
+
+      - name: Check Java version
+        run: java -version
 
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 18.x
+          node-version: 22.x
 
       - name: Install Ionic
         run: npm install -g @ionic/cli
@@ -34,6 +37,10 @@ jobs:
 
       - name: Sync Android project
         run: ionic capacitor sync android
+
+      - name: Clean Gradle cache
+        run: ./gradlew clean
+        working-directory: ./android/       
 
       - name: Generate bundle
         working-directory: ./android/
