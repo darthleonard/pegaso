@@ -37,6 +37,24 @@ switch($endpoint) {
         $router->add('DELETE', '/api/index.php/bills', [$billController, 'deleteBill']);
         $router->add('GET', '/api/index.php/bills/filter', [$billController, 'getBillsByDate']);
         break;
+    case 'cars':
+        require_once 'controllers/car-controller.php';
+        $carController = new CarController($db);
+        $router->add('GET', '/api/index.php/cars', [$carController, 'getAllCars']);
+        $router->add('GET', '/api/index.php/cars/(:id)', [$carController, 'getCarById']);
+        $router->add('POST', '/api/index.php/cars', [$carController, 'createCar']);
+        $router->add('PUT', '/api/index.php/cars', [$carController, 'updateCar']);
+        $router->add('DELETE', '/api/index.php/cars', [$carController, 'deleteCar']);
+        break;
+    case 'car_fuel':
+        require_once 'controllers/car-fuel-controller.php';
+        $fuelController = new CarFuelController($db);
+        $router->add('GET', '/api/index.php/car_fuel', [$fuelController, 'getAll']);
+        $router->add('GET', '/api/index.php/car_fuel/(:id)', [$fuelController, 'getOne']);
+        $router->add('POST', '/api/index.php/car_fuel', [$fuelController, 'create']);
+        $router->add('PUT', '/api/index.php/car_fuel', [$fuelController, 'update']);
+        $router->add('DELETE', '/api/index.php/car_fuel', [$fuelController, 'delete']);
+        break;
     case 'fuel':
         require_once 'controllers/fuel-controller.php';
         $fuelController = new FuelController($db);
