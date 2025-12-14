@@ -1,62 +1,25 @@
 <app-header title="Settings" />
 
 <ion-content [fullscreen]="true">
-  <div *ngIf="loading; else elseBlock">
-    <ion-progress-bar type="indeterminate"></ion-progress-bar>
-    <ion-item>
-      <ion-label>Loading...</ion-label>
-      <ion-spinner slot="end" name="dots" />
+  <ion-list>
+    <ion-item routerLink="connectivity" detail lines="full">
+      <ion-icon slot="start" name="wifi" color="primary"></ion-icon>
+      <ion-label>
+        <h2>Connectivity</h2>
+        <p>Configure API endpoint, API key and online mode.</p>
+      </ion-label>
     </ion-item>
-  </div>
 
-  <ng-template #elseBlock>
-    <ion-list>
-      <ion-item>
-        <ion-label position="floating"> Api URL </ion-label>
-        <ion-input type="text" [(ngModel)]="config.apiUrl" />
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating"> Api Key </ion-label>
-        <ion-input type="text" [(ngModel)]="config.apiKey" />
-      </ion-item>
-      <ion-item>
-        <ion-toggle [(ngModel)]="config.online">Online</ion-toggle>
-      </ion-item>
-      <ion-item>
-        <ion-select
-          label="Auto download data"
-          [(ngModel)]="config.autoDownload"
-        >
-          <ion-select-option value="always"
-            >Always (on app start)</ion-select-option
-          >
-          <ion-select-option value="never">Never</ion-select-option>
-          <!-- <ion-select-option value="custom">Custom (specify time)</ion-select-option> -->
-        </ion-select>
-      </ion-item>
-      <!-- <ion-item>
-        <ion-label position="floating"> Download interval </ion-label>
-        <ion-input type="numeric" [(ngModel)]="config.downloadInterval" />
-      </ion-item> -->
-    </ion-list>
-    <ion-button (click)="onSave()" expand="block"> Save </ion-button>
-    <ion-button (click)="onExportDatabase()" expand="block" color="medium">
-      Export database
-    </ion-button>
-    <ion-button
-      (click)="triggerImportFilePicker()"
-      expand="block"
-      color="tertiary"
-    >
-      Import database
-    </ion-button>
-    <!-- hidden file input used to pick CSV for import -->
-    <input
-      type="file"
-      #fileInput
-      accept=".csv"
-      style="display: none"
-      (change)="onFileSelected($event)"
-    />
-  </ng-template>
+    <ion-item routerLink="import-export" detail lines="full">
+      <ion-icon
+        slot="start"
+        name="cloud-upload-outline"
+        color="tertiary"
+      ></ion-icon>
+      <ion-label>
+        <h2>Import / Export database</h2>
+        <p>Backup, restore or transfer the local database (CSV).</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

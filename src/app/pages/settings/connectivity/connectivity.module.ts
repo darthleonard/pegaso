@@ -6,8 +6,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { ComponentsModule } from 'src/app/components/components.module';
 
-import { SettingsPageRoutingModule } from './settings-routing.module';
-import { SettingsPage } from './settings.page';
+import { ConnectivityPageRoutingModule } from './connectivity-routing.module';
+import { ConnectivityPage } from './connectivity.page';
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import { SettingsPage } from './settings.page';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    SettingsPageRoutingModule,
+    ConnectivityPageRoutingModule,
   ],
-  declarations: [SettingsPage],
+  declarations: [ConnectivityPage],
 })
-export class SettingsPageModule {}
+export class ConnectivityPageModule {}

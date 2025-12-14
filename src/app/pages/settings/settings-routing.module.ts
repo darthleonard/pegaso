@@ -8,8 +8,21 @@ const routes: Routes = [
   {
     path: '',
     component: SettingsPage,
-    canDeactivate: [UnsavedChangesGuard],
-  }
+  },
+  {
+    path: 'connectivity',
+    loadChildren: () =>
+      import('./connectivity/connectivity.module').then(
+        (m) => m.ConnectivityPageModule
+      ),
+  },
+  {
+    path: 'import-export',
+    loadChildren: () =>
+      import('./import-export/import-export.module').then(
+        (m) => m.ImportExportPageModule
+      ),
+  },
 ];
 
 @NgModule({

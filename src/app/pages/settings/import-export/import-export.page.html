@@ -1,0 +1,85 @@
+<app-header title="Import / Export" defaultHref="/settings"></app-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-icon
+                slot="start"
+                name="cloud-download-outline"
+                color="success"
+              ></ion-icon>
+              <ion-card-title>Export database</ion-card-title>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            Export the entire local database to a CSV file. The file is saved to
+            the app Documents folder on the device.
+
+            <div class="ion-margin-top">
+              <ion-button
+                (click)="onExportDatabase()"
+                expand="block"
+                color="success"
+              >
+                <ion-icon
+                  slot="start"
+                  name="download-outline"
+                  color="light"
+                ></ion-icon>
+                Export database
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-item lines="none">
+              <ion-icon
+                slot="start"
+                name="cloud-upload-outline"
+                color="danger"
+              ></ion-icon>
+              <ion-card-title>Import database</ion-card-title>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            Import a CSV file to replace local data. The service makes an
+            in-memory backup before applying changes and will restore previous
+            data if the import fails.
+
+            <div class="ion-margin-top">
+              <ion-button
+                (click)="triggerImportFilePicker()"
+                expand="block"
+                color="danger"
+              >
+                <ion-icon
+                  slot="start"
+                  name="upload-outline"
+                  color="light"
+                ></ion-icon>
+                Import database
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- hidden file input used to pick CSV for import -->
+  <input
+    type="file"
+    #fileInput
+    accept=".csv"
+    style="display: none"
+    (change)="onFileSelected($event)"
+  />
+</ion-content>
