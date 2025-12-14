@@ -36,9 +36,9 @@
           <ion-icon slot="start" name="cash-outline"></ion-icon>
           <ion-label>Budget</ion-label>
         </ion-item> -->
-        <ion-item routerLink="sync">
+        <ion-item *ngIf="showSync" routerLink="sync">
           <ion-icon slot="start" name="sync-outline"></ion-icon>
-          <ion-label>Sync</ion-label>
+          <ion-label>Sync Status</ion-label>
         </ion-item>
         <ion-item routerLink="settings">
           <ion-icon slot="start" name="settings-outline"></ion-icon>
