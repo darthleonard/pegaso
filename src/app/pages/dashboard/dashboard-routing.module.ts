@@ -6,8 +6,12 @@ import { DashboardPage } from './dashboard.page';
 const routes: Routes = [
   {
     path: '',
-    component: DashboardPage
-  }
+    component: DashboardPage,
+  },
+  // {
+  //   path: 'bill',
+  //   loadChildren: () => import('./bill/bill.module').then( m => m.BillPageModule)
+  // }
 ];
 
 @NgModule({

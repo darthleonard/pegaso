@@ -8,6 +8,7 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
 import { ComponentsModule } from 'src/app/components/components.module';
+import { CurrentBillComponent } from './current-bill/current-bill.component';
 
 @NgModule({
   imports: [
@@ -15,8 +16,8 @@ import { ComponentsModule } from 'src/app/components/components.module';
     FormsModule,
     IonicModule,
     ComponentsModule,
-    DashboardPageRoutingModule
+    DashboardPageRoutingModule,
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage, CurrentBillComponent],
 })
 export class DashboardPageModule {}
