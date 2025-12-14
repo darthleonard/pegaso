@@ -1,44 +1,44 @@
 <?php
 
 class ShoppingsController {
-   private $conn;
-   
-   public function __construct($db) {
-      $this->conn = $db;
-   }
+    private $conn;
 
-   public function getAllShoppings() {
-      $stmt = $this->conn->prepare("SELECT id, list_name, effective_date, items_quantity, total, completed FROM shoppingLists");
-      $stmt->execute();
-      $shoppingLists = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function __construct($db) {
+        $this->conn = $db;
+    }
 
-      if (!$shoppingLists) {
-         echo json_encode(['status' => 'error', 'message' => 'No shopping lists found']);
-         exit;
-      }
+    public function getAllShoppings() {
+        $stmt = $this->conn->prepare("SELECT id, list_name, effective_date, items_quantity, total, completed FROM shoppingLists");
+        $stmt->execute();
+        $shoppingLists = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-      foreach ($shoppingLists as &$shoppingList) {
-         $shoppingList['completed'] = (bool)$shoppingList['completed'];
-         $stmt = $this->conn->prepare(
-            "SELECT si.id, i.item_name, i.description, si.unit_price, si.quantity, si.notes 
-            FROM shoppingListItems si 
-            JOIN shoppingItems i ON si.item_id = i.id 
-            WHERE si.list_id = ?");
-         $stmt->execute([$shoppingList['id']]);
-         $shoppingList['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
-      }
+        if (!$shoppingLists) {
+            echo json_encode(['status' => 'error', 'message' => 'No shopping lists found']);
+            exit;
+        }
 
-      echo json_encode($shoppingLists);
-   }
+        foreach ($shoppingLists as &$shoppingList) {
+            $shoppingList['completed'] = (bool)$shoppingList['completed'];
+            $stmt = $this->conn->prepare(
+                "SELECT si.id, i.item_name, i.description, si.unit_price, si.quantity, si.notes 
+                FROM shoppingListItems si 
+                JOIN shoppingItems i ON si.item_id = i.id 
+                WHERE si.list_id = ?");
+            $stmt->execute([$shoppingList['id']]);
+            $shoppingList['items'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
 
-   public function saveShopping() {
-      $inputData = file_get_contents('php://input');
-      $data = json_decode($inputData, true);
+        echo json_encode($shoppingLists);
+    }
 
-      if (isset($data['list_name']) && isset($data['items']) && is_array($data['items'])) {
-          $listId = $data['id'];
-          $stmt = $this->conn->prepare(
-              "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, total, completed) 
+    public function saveShopping() {
+        $inputData = file_get_contents('php://input');
+        $data = json_decode($inputData, true);
+
+        if (isset($data['list_name']) && isset($data['items']) && is_array($data['items'])) {
+            $listId = $data['id'];
+            $stmt = $this->conn->prepare(
+                "INSERT INTO shoppingLists (id, list_name, effective_date, items_quantity, total, completed) 
               VALUES (?, LOWER(?), ?, ?, ?, ?) 
               ON DUPLICATE KEY UPDATE 
                  list_name = LOWER(VALUES(list_name)),
@@ -46,26 +46,30 @@ class ShoppingsController {
                  items_quantity = VALUES(items_quantity),
                  total = VALUES(total),
                  completed = VALUES(completed)");
-          $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], $data['total'], (int)$data['completed']]);
+            $stmt->execute([$listId, $data['list_name'], $data['effective_date'], $data['items_quantity'], $data['total'], (int)$data['completed']]);
 
-          foreach ($data['items'] as $item) {
-              $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE item_name = LOWER(?)");
-              $stmt->execute([strtolower($item['item_name'])]);
-              $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
-  
-              if ($existingItem) {
-                  $itemId = $existingItem['id'];
-              } else {
-                  $stmt = $this->conn->prepare(
-                      "INSERT INTO shoppingItems (id, item_name, description) 
-                      VALUES (UUID(), LOWER(?), LOWER(?))"
-                  );
-                  $stmt->execute([strtolower($item['item_name']), strtolower($item['description'] ?? '')]);
-                  $itemId = $this->conn->lastInsertId();
-              }
+            foreach ($data['items'] as $item) {
+                $stmt = $this->conn->prepare("SELECT id FROM shoppingItems WHERE item_name = LOWER(?)");
+                $stmt->execute([strtolower($item['item_name'])]);
+                $existingItem = $stmt->fetch(PDO::FETCH_ASSOC);
 
-              $stmt = $this->conn->prepare(
-                  "INSERT INTO shoppingListItems (id, list_id, item_id, quantity, unit_price, notes) 
+                if ($existingItem) {
+                    $itemId = $existingItem['id'];
+                } else {
+                    $itemId = $this->generateUuid();
+                    $stmt = $this->conn->prepare(
+                        "INSERT INTO shoppingItems (id, item_name, description) 
+                        VALUES (?, LOWER(?), LOWER(?))"
+                    );
+                    $stmt->execute([
+                        $itemId,
+                        strtolower($item['item_name']),
+                        strtolower($item['description'] ?? '')
+                    ]);
+                }
+
+                $stmt = $this->conn->prepare(
+                    "INSERT INTO shoppingListItems (id, list_id, item_id, quantity, unit_price, notes) 
                   VALUES (?, ?, ?, ?, ?, ?) 
                   ON DUPLICATE KEY UPDATE 
                      id = VALUES(id),
@@ -74,14 +78,26 @@ class ShoppingsController {
                      quantity = VALUES(quantity),
                      unit_price = VALUES(unit_price),
                      notes = VALUES(notes)");
-              $stmt->execute([$item['id'], $listId, $itemId, $item['quantity'], $item['unit_price'] ?? null, $item['notes'] ?? null]);
-          }
-  
-          echo json_encode(['status' => 'success', 'message' => 'Shopping list created successfully', 'list_id' => $listId]);
-      } else {
-          echo json_encode(['status' => 'error', 'message' => 'Invalid data received']);
-      }
-  }
-}
+                $stmt->execute([$item['id'], $listId, $itemId, $item['quantity'], $item['unit_price'] ?? null, $item['notes'] ?? null]);
+            }
 
-?>
+            echo json_encode(['status' => 'success', 'message' => 'Shopping list created successfully', 'list_id' => $listId]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid data received']);
+        }
+    }
+
+    private function generateUuid() {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
+    }
+}
