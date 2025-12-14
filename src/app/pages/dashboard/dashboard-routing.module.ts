@@ -8,10 +8,6 @@ const routes: Routes = [
     path: '',
     component: DashboardPage,
   },
-  // {
-  //   path: 'bill',
-  //   loadChildren: () => import('./bill/bill.module').then( m => m.BillPageModule)
-  // }
 ];
 
 @NgModule({
