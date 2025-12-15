@@ -6,21 +6,24 @@
   </ion-refresher>
 
   <div *ngIf="!shoppingItems">loading...</div>
-  <div *ngIf="shoppingItems && !shoppingItems.length">no records found</div>
+  <app-empty-state
+    *ngIf="shoppingItems && !shoppingItems.length"
+    title="No products"
+    sub="No products found"
+  ></app-empty-state>
 
   <ion-list>
     <ion-item *ngFor="let item of shoppingItems" (click)="onClick(item)">
-        <ion-label>
-          <h2>{{ item.item_name | pascalCase:true }}</h2>
-          <p>{{ item.description | pascalCase:true }}</p>
-        </ion-label>
-      </ion-item>
-      
+      <ion-label>
+        <h2>{{ item.item_name | pascalCase:true }}</h2>
+        <p>{{ item.description | pascalCase:true }}</p>
+      </ion-label>
+    </ion-item>
   </ion-list>
-  
+
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="onCreateClick()">
-      <ion-icon name="add"/>
+      <ion-icon name="add" />
     </ion-fab-button>
   </ion-fab>
 </ion-content>

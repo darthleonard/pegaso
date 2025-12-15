@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { AppBillIconComponent } from './app-bill-icon/app-bill-icon.component';
 import { AppHeaderComponent } from './app-header/app-header.component';
+import { EmptyStateComponent } from './empty-state/empty-state.component';
 import { DateMonthInputComponent } from './date-month-input/date-month-input.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { FormComponent } from './form/form/form.component';
@@ -16,6 +17,7 @@ import { SelectModalInputComponent } from './form/editors/select-modal/select-mo
     MainMenuComponent,
     AppBillIconComponent,
     AppHeaderComponent,
+    EmptyStateComponent,
     DateMonthInputComponent,
     FormComponent,
     FormModalComponent,
@@ -31,6 +33,7 @@ import { SelectModalInputComponent } from './form/editors/select-modal/select-mo
     MainMenuComponent,
     AppBillIconComponent,
     AppHeaderComponent,
+    EmptyStateComponent,
     DateMonthInputComponent,
     FormComponent,
     FormModalComponent,

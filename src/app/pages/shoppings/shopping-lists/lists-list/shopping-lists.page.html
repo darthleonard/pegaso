@@ -6,7 +6,11 @@
   </ion-refresher>
 
   <div *ngIf="!shoppingLists">loading...</div>
-  <div *ngIf="shoppingLists && !shoppingLists.length">no records found</div>
+  <app-empty-state
+    *ngIf="shoppingLists && !shoppingLists.length"
+    title="No lists"
+    sub="No shopping lists found"
+  ></app-empty-state>
 
   <ion-list>
     <ion-item *ngFor="let item of shoppingLists" (click)="onClick(item)">

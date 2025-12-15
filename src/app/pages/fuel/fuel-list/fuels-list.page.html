@@ -6,20 +6,29 @@
   </ion-refresher>
 
   <div *ngIf="!fuels">loading...</div>
-  <div *ngIf="fuels && !fuels.length">no records found</div>
+  <app-empty-state
+    *ngIf="fuels && !fuels.length"
+    title="No fuel"
+    sub="No fuel records found"
+  ></app-empty-state>
 
   <ion-list *ngIf="fuels && fuels.length">
     <ion-item *ngFor="let fuel of fuels">
       <ion-grid>
         <ion-row>
           <ion-col size="3" (click)="onClick(fuel)">
-            <ion-label>{{ fuel.fill_date | date: 'mediumDate' }} {{ fuel.changeType ? '*' : '' }}</ion-label>
+            <ion-label
+              >{{ fuel.fill_date | date: 'mediumDate' }} {{ fuel.changeType ?
+              '*' : '' }}</ion-label
+            >
           </ion-col>
           <ion-col size="3" (click)="onClick(fuel)">
             <ion-label>{{ fuel.total | currency }}</ion-label>
           </ion-col>
           <ion-col size="2" (click)="onClick(fuel)">
-            <ion-label>{{ !!fuel.fuel_amount ? fuel.fuel_amount : 0 }} lt</ion-label>
+            <ion-label
+              >{{ !!fuel.fuel_amount ? fuel.fuel_amount : 0 }} lt</ion-label
+            >
           </ion-col>
           <ion-col size="4" (click)="onClick(fuel)">
             <ion-label>{{ !fuel.odometer ? 0 : fuel.odometer }} km</ion-label>
@@ -30,7 +39,7 @@
   </ion-list>
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="onCreateClick()">
-      <ion-icon name="add"/>
+      <ion-icon name="add" />
     </ion-fab-button>
   </ion-fab>
 </ion-content>

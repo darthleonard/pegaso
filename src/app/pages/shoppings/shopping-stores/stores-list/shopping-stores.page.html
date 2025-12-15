@@ -5,11 +5,16 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  list of stores
-  
+  <div *ngIf="true">
+    <app-empty-state
+      title="No stores"
+      sub="No shopping stores found"
+    ></app-empty-state>
+  </div>
+
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="onCreateClick()">
-      <ion-icon name="add"/>
+      <ion-icon name="add" />
     </ion-fab-button>
   </ion-fab>
 </ion-content>
