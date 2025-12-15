@@ -36,6 +36,10 @@ export class CurrentBillComponent implements OnInit {
     }
   }
 
+  async refresh() {
+    await this.load();
+  }
+
   onClick() {
     this.router.navigate(['/bills']);
   }

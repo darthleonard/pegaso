@@ -22,10 +22,26 @@
   </ion-card>
 
   <ion-card *ngIf="!loading && !error">
-    <ion-card-header (click)="onClick()">
-      <ion-item lines="none">
+    <ion-card-header>
+      <ion-item lines="none" (click)="onClick()">
         <ion-icon slot="start" name="home-outline" color="primary"></ion-icon>
         <ion-card-title>House bills (current month)</ion-card-title>
+        <div slot="end">
+          <ion-spinner
+            *ngIf="loading"
+            name="dots"
+            style="width: 18px; height: 18px"
+          ></ion-spinner>
+          <ion-button
+            *ngIf="!loading"
+            fill="clear"
+            size="small"
+            (click)="refresh(); $event.stopPropagation()"
+            title="Refresh"
+          >
+            <ion-icon name="refresh"></ion-icon>
+          </ion-button>
+        </div>
       </ion-item>
     </ion-card-header>
     <ion-card-content *ngIf="bill">

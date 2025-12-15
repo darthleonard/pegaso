@@ -28,6 +28,7 @@ export class TopProductsComponent implements OnInit {
   async load() {
     this.loading = true;
     this.error = null;
+
     try {
       const lists: any[] = await this.offlineDataService.getAllRecords(
         'shoppingLists'
@@ -117,5 +118,9 @@ export class TopProductsComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  async refresh() {
+    await this.load();
   }
 }

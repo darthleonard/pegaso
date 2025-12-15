@@ -44,4 +44,8 @@ export class RecentFuelComponent implements OnInit {
       this.loading = false;
     }
   }
+
+  async refresh() {
+    await this.load();
+  }
 }
