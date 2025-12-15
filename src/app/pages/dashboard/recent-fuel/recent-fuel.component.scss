@@ -1,0 +1,16 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.kpi-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.kpi-sub {
+  color: var(--ion-color-medium);
+  margin-top: 0.25rem;
+}

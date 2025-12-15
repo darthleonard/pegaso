@@ -1,0 +1,57 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80px;
+}
+
+.small {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+}
+
+ion-item h3 {
+  margin: 0;
+}
+
+/* horizontal cards */
+.horizontal {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.horizontal-card {
+  min-width: 200px;
+  flex: 0 0 auto;
+}
+
+/* reduce default spacing between card header and content for compact KPIs */
+.horizontal-card {
+  ion-card-header {
+    /* tighten the bottom padding so header and content sit closer */
+    padding-bottom: 6px;
+  }
+
+  ion-card-content {
+    /* tighten the top padding so content moves up */
+    padding-top: 6px;
+  }
+}
+
+.kpi {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.kpi-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.kpi-sub {
+  color: var(--ion-color-medium);
+  margin-top: 0.25rem;
+}

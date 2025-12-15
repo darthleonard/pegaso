@@ -1,0 +1,47 @@
+<ng-container>
+  <ion-card *ngIf="loading">
+    <ion-card-content class="loader">
+      <ion-spinner name="lines"></ion-spinner>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!loading && error" color="danger">
+    <ion-card-header>
+      <ion-item lines="none">
+        <ion-icon
+          slot="start"
+          name="alert-circle-outline"
+          color="danger"
+        ></ion-icon>
+        <ion-card-title>Error</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      {{ error }}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!loading && !error">
+    <ion-card-header>
+      <ion-item lines="none">
+        <ion-icon
+          slot="start"
+          name="water-outline"
+          color="secondary"
+        ></ion-icon>
+        <ion-card-title>Recent fuel</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="recent; else noFuel" class="kpi">
+        <div class="kpi-value">
+          {{ recent.fill_date | date : "mediumDate" }}
+        </div>
+        <div class="kpi-sub">{{ recent.total | currency }}</div>
+      </div>
+      <ng-template #noFuel>
+        <div class="kpi-sub">No fuel records found</div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</ng-container>

@@ -1,0 +1,61 @@
+<ng-container>
+  <ion-card *ngIf="loading">
+    <ion-card-content class="loader">
+      <ion-spinner name="lines"></ion-spinner>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!loading && error" color="danger">
+    <ion-card-header>
+      <ion-item lines="none">
+        <ion-icon
+          slot="start"
+          name="alert-circle-outline"
+          color="danger"
+        ></ion-icon>
+        <ion-card-title>Error</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      {{ error }}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="!loading && !error">
+    <ion-card-header>
+      <ion-item lines="none">
+        <ion-icon
+          slot="start"
+          name="pricetags-outline"
+          color="tertiary"
+        ></ion-icon>
+        <ion-card-title>Top products</ion-card-title>
+      </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngIf="products && products.length; else noData">
+        <div class="horizontal">
+          <ion-card class="horizontal-card" *ngFor="let p of products">
+            <ion-card-header>
+              <ion-card-title>{{ p.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <div class="kpi">
+                <div class="small">{{ p.total }} total items</div>
+              </div>
+              <div class="small" style="margin-top: 8px">
+                avg price: {{ p.avgUnitPrice | currency }}
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+      <ng-template #noData>
+        <div class="kpi">
+          <div class="kpi-value">-</div>
+          <div class="kpi-sub">No product data</div>
+        </div>
+      </ng-template>
+    </ion-card-content>
+  </ion-card>
+</ng-container>
