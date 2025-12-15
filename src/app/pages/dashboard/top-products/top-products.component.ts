@@ -10,6 +10,7 @@ import { OfflineDataService } from 'src/app/services/offline-data.service';
 export class TopProductsComponent implements OnInit {
   loading = true;
   error: string | null = null;
+  updated = false;
 
   products: Array<{
     name: string;
@@ -111,6 +112,9 @@ export class TopProductsComponent implements OnInit {
 
       products.sort((a, b) => b.total - a.total);
       this.products = products.slice(0, 5);
+      // animate update
+      this.updated = true;
+      setTimeout(() => (this.updated = false), 600);
     } catch (err) {
       console.error('Error loading top products', err);
       this.error = 'Unable to load top products';

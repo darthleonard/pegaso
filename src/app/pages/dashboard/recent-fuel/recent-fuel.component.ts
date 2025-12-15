@@ -11,6 +11,7 @@ export class RecentFuelComponent implements OnInit {
   loading = true;
   error: string | null = null;
   recent: { total: number; fill_date: string } | null = null;
+  updated = false;
 
   constructor(private readonly offlineDataService: OfflineDataService) {}
 
@@ -33,6 +34,9 @@ export class RecentFuelComponent implements OnInit {
           total: Number(recent.total || 0),
           fill_date: recent.fill_date,
         };
+        // animate update
+        this.updated = true;
+        setTimeout(() => (this.updated = false), 600);
       } else {
         this.recent = null;
       }

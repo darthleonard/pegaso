@@ -12,6 +12,7 @@ export class CurrentBillComponent implements OnInit {
   bill: any;
   loading = true;
   error: string | null = null;
+  updated = false;
 
   constructor(
     private readonly offlineDataService: OfflineDataService,
@@ -28,6 +29,9 @@ export class CurrentBillComponent implements OnInit {
     try {
       const bills: any[] = await this.offlineDataService.getAllRecords('bills');
       this.bill = bills && bills.length ? bills[0] : null;
+      // trigger visual update animation
+      this.updated = true;
+      setTimeout(() => (this.updated = false), 600);
     } catch (err) {
       this.error = 'Unable to load current bill';
       this.bill = null;

@@ -1,11 +1,11 @@
 <ng-container>
-  <ion-card *ngIf="loading">
+  <ion-card class="kpi-card" *ngIf="loading">
     <ion-card-content class="loader">
       <ion-spinner name="lines"></ion-spinner>
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="!loading && error" color="danger">
+  <ion-card class="kpi-card" *ngIf="!loading && error" color="danger">
     <ion-card-header>
       <ion-item lines="none">
         <ion-icon
@@ -21,7 +21,11 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="!loading && !error">
+  <ion-card
+    class="kpi-card"
+    [class.updated]="updated"
+    *ngIf="!loading && !error"
+  >
     <ion-card-header>
       <ion-item lines="none">
         <ion-icon
@@ -30,7 +34,7 @@
           color="secondary"
         ></ion-icon>
         <ion-card-title>Recent fuel</ion-card-title>
-        <div slot="end">
+        <div slot="end" class="kpi-header-action">
           <ion-spinner
             *ngIf="loading"
             name="dots"
