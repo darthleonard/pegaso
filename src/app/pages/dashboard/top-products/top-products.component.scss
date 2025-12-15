@@ -17,13 +17,14 @@ ion-item h3 {
 /* horizontal cards */
 .horizontal {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   overflow-x: auto;
-  padding: 8px 0;
+  padding: 6px 0;
 }
 
 .horizontal-card {
-  min-width: 200px;
+  /* smaller card so more fit on-screen */
+  min-width: 120px;
   flex: 0 0 auto;
 }
 
@@ -32,11 +33,15 @@ ion-item h3 {
   ion-card-header {
     /* tighten the bottom padding so header and content sit closer */
     padding-bottom: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 
   ion-card-content {
     /* tighten the top padding so content moves up */
     padding-top: 6px;
+    padding-left: 8px;
+    padding-right: 8px;
   }
 }
 
@@ -49,6 +54,20 @@ ion-item h3 {
 .kpi-value {
   font-size: 1.15rem;
   font-weight: 700;
+}
+
+/* truncate long product names inside the horizontal cards */
+.horizontal-card ion-card-header ion-card-title {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  font-size: 0.95rem;
+}
+
+.horizontal-card ion-card-content {
+  font-size: 0.85rem;
 }
 
 .kpi-sub {
